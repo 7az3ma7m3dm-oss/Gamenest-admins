@@ -74,7 +74,7 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 .nav-item.hidden{display:none}
 
 .main{display:flex;flex-direction:column;min-width:0}
-.topbar{position:sticky;top:0;z-index:40;background:#0a0a0a;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 22px;height:60px}
+.topbar{position:sticky;top:0;z-index:40;background:#0a0a0a;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 22px;min-height:60px}
 .menu-btn{display:none;font-size:22px;color:var(--text);width:36px;height:36px;align-items:center;justify-content:center}
 @media(max-width:700px){.menu-btn{display:inline-flex}}
 .topbar-search{flex:1;max-width:400px;position:relative}
@@ -165,7 +165,6 @@ td.mono{font-family:var(--mono);font-size:11.5px}
 .danger-row .lbl{font-size:13px}
 .danger-row .desc{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.06em;margin-top:3px}
 
-/* Timeline */
 .timeline{display:flex;flex-direction:column;gap:0;margin-top:16px;border-left:2px solid var(--border);padding-left:16px}
 .tl-item{position:relative;padding:10px 0}
 .tl-item::before{content:"";position:absolute;left:-23px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
@@ -175,12 +174,10 @@ td.mono{font-family:var(--mono);font-size:11.5px}
 .tl-text{font-size:13px;margin-top:2px}
 .tl-who{font-family:var(--mono);font-size:10px;color:var(--info);letter-spacing:.08em;margin-top:2px}
 
-/* Proof preview inside modal */
 .proof-view{background:#0d0d0d;border:1px solid var(--border-2);padding:12px;text-align:center;margin-top:10px}
 .proof-view img{max-width:100%;max-height:400px;object-fit:contain}
 .proof-view .filename{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;word-break:break-all}
 
-/* Order detail cells */
 .od-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;margin-bottom:16px}
 @media(max-width:520px){.od-grid{grid-template-columns:1fr}}
 .od-cell{display:flex;flex-direction:column;gap:2px}
@@ -698,8 +695,7 @@ function renderOrders(){
         <td>
           <div class="row-flex" style="gap:6px">
             <button class="btn btn-ghost btn-sm" data-view-order="${o.id}">View</button>
-            ${flow && currentRole !== "staff" ? `<button class="btn btn-${flow.btn} btn-sm" data-order-advance="${o.id}">${flow.label}</button>` : ""}
-            ${flow && currentRole === "staff" ? `<button class="btn btn-${flow.btn} btn-sm" data-order-advance="${o.id}">${flow.label}</button>` : ""}
+            ${flow ? `<button class="btn btn-${flow.btn} btn-sm" data-order-advance="${o.id}">${flow.label}</button>` : ""}
             ${o.status === "pending" && currentRole !== "staff" ? `<button class="btn btn-danger btn-sm" data-order-act="rejected" data-id="${o.id}">Reject</button>` : ""}
           </div>
         </td>
@@ -764,8 +760,7 @@ function openOrderModal(id){
     ${hasProof ? `<button class="btn btn-info btn-sm" id="viewProofBtn" style="margin-bottom:14px">📸 View Payment Proof</button>` : ""}
 
     <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--border)">
-      ${flow && currentRole !== "staff" ? `<button class="btn btn-${flow.btn} btn-sm" id="modalAdvance">${flow.label}</button>` : ""}
-      ${flow && currentRole === "staff" ? `<button class="btn btn-${flow.btn} btn-sm" id="modalAdvance">${flow.label}</button>` : ""}
+      ${flow ? `<button class="btn btn-${flow.btn} btn-sm" id="modalAdvance">${flow.label}</button>` : ""}
       ${o.status === "pending" && currentRole !== "staff" ? `<button class="btn btn-danger btn-sm" id="modalReject">Reject Order</button>` : ""}
       ${o.status !== "refunded" && currentRole !== "staff" ? `<button class="btn btn-warn btn-sm" id="modalRefund">Refund</button>` : ""}
     </div>
@@ -871,11 +866,11 @@ function openProof(o){
     <div class="proof-view">
       ${hasImage
         ? `<img src="${esc(o.proofData)}" alt="proof">`
-        : `<div class="dim small mono" style="padding:30px">[ Image not stored yet — only filename saved ]</div>`}
+        : `<div class="dim small mono" style="padding:30px">[ Image not stored — only filename saved ]</div>`}
       <div class="filename">${esc(o.proofName || "no filename")}</div>
     </div>
     <div class="dim small mono" style="margin-top:14px;line-height:1.7">
-      ⚠ To see the actual image here, the store needs to save the proof as base64. Patch coming next.
+      ⚠ Older orders don't have the image stored. New orders (placed after the recent update) will show the image here.
     </div>
   `;
   $("#modalProof").classList.add("on");
