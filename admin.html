@@ -6,13 +6,7 @@
 <meta name="robots" content="noindex,nofollow">
 <title>GAMENEST // Owner Console</title>
 <style>
-:root{
-  --bg:#0a0a0a;--panel:#111;--panel-2:#151515;--border:#1f1f1f;--border-2:#2a2a2a;
-  --text:#f2f2f2;--muted:#8a8a8a;--dim:#4a4a4a;--accent:#fff;
-  --danger:#ff4a4a;--success:#5fc85f;--warn:#ffb454;--info:#5fc8ff;
-  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  --sans:"Rajdhani",system-ui,-apple-system,sans-serif;
-}
+:root{--bg:#0a0a0a;--panel:#111;--border:#1f1f1f;--border-2:#2a2a2a;--text:#f2f2f2;--muted:#8a8a8a;--dim:#4a4a4a;--accent:#fff;--danger:#ff4a4a;--success:#5fc85f;--warn:#ffb454;--info:#5fc8ff;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:"Rajdhani",system-ui,-apple-system,sans-serif}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.5;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
@@ -21,7 +15,6 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:#0a0a0a}
 ::-webkit-scrollbar-thumb{background:#2a2a2a}
-
 .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px}
 .login-box{background:var(--panel);border:1px solid var(--border-2);padding:44px 36px;width:100%;max-width:420px}
 .login-box h1{font-family:var(--mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
@@ -47,23 +40,13 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 .btn-sm{padding:6px 12px;font-size:10px;letter-spacing:.12em}
 .btn-block{width:100%}
 .login-msg{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--danger);min-height:1em;margin-top:14px;text-align:center}
-
 #app{display:none;min-height:100vh}
 #app.on{display:flex}
-@media(max-width:500px){
-  #app.on{grid-template-columns:1fr}
-  .sidebar{position:fixed;top:0;left:0;bottom:0;width:240px;z-index:200;transform:translateX(-100%);transition:transform .25s}
-  .sidebar.open{transform:translateX(0)}
-  .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:150}
-  .sidebar-backdrop.on{display:block}
-}
-
 .sidebar{background:#0d0d0d;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;width:240px;flex-shrink:0}
 .sidebar-head{padding:20px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .sidebar-brand{font-family:var(--mono);font-size:13px;font-weight:900;letter-spacing:.22em;text-transform:uppercase}
 .sidebar-brand small{color:var(--dim);font-weight:500;display:block;font-size:9px;letter-spacing:.24em;margin-top:4px}
 .sidebar-close{display:none;font-size:22px;color:var(--muted)}
-@media(max-width:50px){.sidebar-close{display:block}}
 .nav-section{padding:14px 0 6px}
 .nav-title{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);padding:6px 18px}
 .nav-item{display:flex;align-items:center;gap:11px;padding:10px 18px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--muted);transition:.15s;border-left:2px solid transparent;cursor:pointer;text-transform:uppercase;font-weight:600}
@@ -72,11 +55,9 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 .nav-item .ico{width:16px;text-align:center;flex-shrink:0;font-size:13px}
 .nav-item .count{margin-left:auto;background:var(--accent);color:var(--bg);font-size:9px;font-weight:800;padding:1px 6px;border-radius:8px;font-family:var(--mono)}
 .nav-item.hidden{display:none}
-
 .main{display:flex;flex-direction:column;min-width:0;flex:1}
 .topbar{position:sticky;top:0;z-index:40;background:#0a0a0a;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 22px;min-height:60px}
 .menu-btn{display:none;font-size:22px;color:var(--text);width:36px;height:36px;align-items:center;justify-content:center}
-@media(max-width:50px){.menu-btn{display:inline-flex}}
 .topbar-search{flex:1;max-width:400px;position:relative}
 .topbar-search input{width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text);padding:8px 12px 8px 32px;font-size:12px;outline:none}
 .topbar-search input:focus{border-color:var(--accent)}
@@ -85,7 +66,6 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 .topbar-user .meta{text-align:right;font-family:var(--mono);font-size:10px;letter-spacing:.1em}
 .topbar-user .meta .em{color:var(--text);font-size:11px}
 .topbar-user .meta .rl{color:var(--dim);font-size:9px;text-transform:uppercase;margin-top:2px}
-
 .content{padding:26px 22px 80px;flex:1;min-width:0}
 .view{display:none}
 .view.on{display:block}
@@ -93,7 +73,6 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 .view-title{font-family:var(--mono);font-size:16px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
 .view-sub{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:4px}
 .view-actions{display:flex;gap:8px;flex-wrap:wrap}
-
 .grid-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px}
 .stat{background:var(--panel);border:1px solid var(--border);padding:20px}
 .stat .k{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
@@ -103,17 +82,14 @@ input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
 .stat.warn .v{color:var(--warn)}
 .stat.danger .v{color:var(--danger)}
 .stat.info .v{color:var(--info)}
-
 .panel{background:var(--panel);border:1px solid var(--border);padding:20px}
 .panel-title{font-family:var(--mono);font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-
 .tbl-wrap{overflow-x:auto;background:var(--panel);border:1px solid var(--border)}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);font-weight:600;padding:12px 14px;border-bottom:1px solid var(--border);background:#0d0d0d}
 td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
 tr:hover td{background:rgba(255,255,255,.02)}
 td.mono{font-family:var(--mono);font-size:11.5px}
-
 .badge{display:inline-block;padding:4px 10px;font-family:var(--mono);font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;border:1px solid}
 .badge.pending{border-color:var(--warn);color:var(--warn);background:rgba(255,180,84,.08)}
 .badge.paid{border-color:var(--info);color:var(--info);background:rgba(95,200,255,.08)}
@@ -124,20 +100,16 @@ td.mono{font-family:var(--mono);font-size:11.5px}
 .badge.admin{border-color:var(--info);color:var(--info);background:rgba(95,200,255,.08)}
 .badge.staff{border-color:var(--muted);color:var(--muted)}
 .badge.refunded{border-color:var(--info);color:var(--info)}
-
 .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
 .chip{padding:7px 13px;border:1px solid var(--border-2);color:var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;transition:.15s;cursor:pointer}
 .chip:hover{color:var(--text);border-color:var(--accent)}
 .chip.on{background:var(--accent);color:var(--bg);border-color:var(--accent)}
-
 .empty{background:var(--panel);border:1px dashed var(--border-2);padding:50px 20px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
-
 .activity{display:flex;flex-direction:column;gap:8px}
 .act{background:var(--panel);border:1px solid var(--border);padding:12px 14px;display:flex;gap:14px;align-items:flex-start;font-size:12px}
 .act .t{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em;white-space:nowrap;flex-shrink:0;min-width:140px}
 .act .b{flex:1}
 .act .who{font-family:var(--mono);font-size:10px;color:var(--info);letter-spacing:.1em}
-
 .modal{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.85);backdrop-filter:blur(8px)}
 .modal.on{display:flex}
 .modal-box{background:var(--bg);border:1px solid var(--border-2);width:100%;max-width:560px;max-height:90vh;overflow-y:auto;padding:30px 26px;position:relative}
@@ -146,25 +118,20 @@ td.mono{font-family:var(--mono);font-size:11.5px}
 .modal-close:hover{color:var(--accent)}
 .modal h3{font-family:var(--mono);font-size:13px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;color:var(--accent)}
 .modal .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:520px){.modal .row{grid-template-columns:1fr}}
 .modal .actions{display:flex;gap:10px;margin-top:20px}
 .modal .actions .btn{flex:1}
-
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent);color:var(--bg);padding:12px 20px;font-family:var(--mono);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:0;pointer-events:none;transition:.25s;z-index:500;box-shadow:0 0 30px rgba(255,255,255,.35)}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-
 .row-flex{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .muted{color:var(--muted)}
 .dim{color:var(--dim)}
 .mono{font-family:var(--mono)}
 .small{font-size:11px}
 .danger-zone{border:1px solid var(--danger);background:rgba(255,74,74,.04);padding:22px;margin-top:14px}
-.danger-zone h4{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--danger);margin-bottom:14px}
 .danger-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
 .danger-row:last-child{border-bottom:none}
 .danger-row .lbl{font-size:13px}
 .danger-row .desc{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.06em;margin-top:3px}
-
 .timeline{display:flex;flex-direction:column;gap:0;margin-top:16px;border-left:2px solid var(--border);padding-left:16px}
 .tl-item{position:relative;padding:10px 0}
 .tl-item::before{content:"";position:absolute;left:-23px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
@@ -173,13 +140,10 @@ td.mono{font-family:var(--mono);font-size:11.5px}
 .tl-time{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.08em}
 .tl-text{font-size:13px;margin-top:2px}
 .tl-who{font-family:var(--mono);font-size:10px;color:var(--info);letter-spacing:.08em;margin-top:2px}
-
 .proof-view{background:#0d0d0d;border:1px solid var(--border-2);padding:12px;text-align:center;margin-top:10px}
 .proof-view img{max-width:100%;max-height:400px;object-fit:contain}
 .proof-view .filename{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;word-break:break-all}
-
 .od-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;margin-bottom:16px}
-@media(max-width:520px){.od-grid{grid-template-columns:1fr}}
 .od-cell{display:flex;flex-direction:column;gap:2px}
 .od-cell .k{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
 .od-cell .v{font-family:var(--mono);font-size:13px;color:var(--text);word-break:break-word}
@@ -277,8 +241,11 @@ td.mono{font-family:var(--mono);font-size:11.5px}
 
       <section class="view" id="v-products">
         <div class="view-head">
-          <div><div class="view-title">// Products</div><div class="view-sub" id="productsSub">Manage catalog</div></div>
-          <div class="view-actions"><button class="btn btn-primary btn-sm" id="addProduct">+ New Product</button></div>
+          <div><div class="view-title">// Products</div><div class="view-sub" id="productsSub">Manage catalog · prices update live on store</div></div>
+          <div class="view-actions">
+            <button class="btn btn-ghost btn-sm" id="syncProducts">↻ Sync to Store</button>
+            <button class="btn btn-primary btn-sm" id="addProduct">+ New Product</button>
+          </div>
         </div>
         <div id="productsWrap"></div>
       </section>
@@ -316,13 +283,13 @@ td.mono{font-family:var(--mono);font-size:11.5px}
 
       <section class="view" id="v-website">
         <div class="view-head">
-          <div><div class="view-title">// Website Content</div><div class="view-sub">Banners, announcements, featured products</div></div>
+          <div><div class="view-title">// Website Content</div><div class="view-sub">Banners, announcements, maintenance</div></div>
         </div>
         <div class="grid-stats" style="grid-template-columns:1fr 1fr;gap:18px">
           <div class="panel">
             <div class="panel-title">// Homepage Banner</div>
             <div class="field"><label>Announcement Text</label><input type="text" id="bannerText" placeholder="e.g. 20% OFF this weekend!"></div>
-            <div class="field"><label>Link (optional)</label><input type="text" id="bannerLink" placeholder="/offers"></div>
+            <div class="field"><label>Link (optional)</label><input type="text" id="bannerLink" placeholder="#vbucks"></div>
             <div class="row-flex">
               <button class="btn btn-primary btn-sm" id="saveBanner">Save Banner</button>
               <button class="btn btn-danger btn-sm" id="clearBanner">Disable Banner</button>
@@ -491,6 +458,81 @@ async function logActivity(action, target, details){
   } catch(e){ console.warn("Log failed:", e); }
 }
 
+/* ============================================================
+   NOTIFICATIONS
+   ============================================================ */
+function playBeep(){
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.frequency.value = 880; osc.type = "sine";
+    gain.gain.setValueAtTime(0.2, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+    osc.start(); osc.stop(ctx.currentTime + 0.35);
+    setTimeout(() => {
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.connect(gain2); gain2.connect(ctx.destination);
+      osc2.frequency.value = 1100; osc2.type = "sine";
+      gain2.gain.setValueAtTime(0.2, ctx.currentTime);
+      gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+      osc2.start(); osc2.stop(ctx.currentTime + 0.35);
+    }, 200);
+  } catch(e){}
+}
+
+function notifyNewTicket(t){
+  toast("🔔 New ticket from " + (t.name || "customer"));
+  playBeep();
+  if ("Notification" in window && Notification.permission === "granted"){
+    try {
+      new Notification("GAMENEST · New Support Ticket", {
+        body: (t.name || "Customer") + ": " + (t.message || "").slice(0, 100)
+      });
+    } catch(e){}
+  }
+}
+
+function notifyNewOrder(o){
+  toast("🔔 New order · " + (o.orderId || ""));
+  playBeep();
+  if ("Notification" in window && Notification.permission === "granted"){
+    try {
+      new Notification("GAMENEST · New Order", {
+        body: (o.product || "item") + " · " + (o.price || 0) + " EGP"
+      });
+    } catch(e){}
+  }
+}
+
+const notifBtn = $("#notifBtn");
+if (notifBtn && "Notification" in window){
+  if (Notification.permission === "granted"){ notifBtn.style.display = "none"; }
+  else if (Notification.permission === "denied"){ notifBtn.style.display = "none"; }
+  else {
+    notifBtn.style.display = "";
+    notifBtn.addEventListener("click", async () => {
+      try {
+        const perm = await Notification.requestPermission();
+        if (perm === "granted"){
+          notifBtn.textContent = "🔔 On";
+          notifBtn.disabled = true;
+          toast("Notifications enabled");
+          setTimeout(() => notifBtn.style.display = "none", 1200);
+        } else {
+          notifBtn.style.display = "none";
+          toast("Notifications blocked");
+        }
+      } catch(e){}
+    });
+  }
+}
+
+/* ============================================================
+   AUTH
+   ============================================================ */
 $("#loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   const btn = $("#lgBtn");
@@ -567,48 +609,64 @@ $$("[data-close]").forEach(el => el.addEventListener("click", () => $("#" + el.d
 $$(".modal").forEach(m => m.addEventListener("click", (e) => { if (e.target === m) m.classList.remove("on"); }));
 
 function attachListeners(){
+  let __firstOrderLoad = true;
   unsubs.push(onSnapshot(query(collection(db, "orders"), orderBy("createdAt", "desc")), snap => {
-    allOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const prevLen = allOrders.length;
+    const newOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (!__firstOrderLoad && newOrders.length > prevLen){
+      const o = newOrders[0];
+      if (o && (o.status || "pending") === "pending") notifyNewOrder(o);
+    }
+    __firstOrderLoad = false;
+    allOrders = newOrders;
     const pending = allOrders.filter(o => o.status === "pending").length;
     const nav = $("#navOrders"); nav.textContent = pending; nav.hidden = pending === 0;
     renderOrders(); renderCustomers(); renderDashboard(); renderAnalytics();
   }));
+
   unsubs.push(onSnapshot(collection(db, "products"), snap => {
     allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     renderProducts(); renderDashboard();
   }));
+
   unsubs.push(onSnapshot(query(collection(db, "reviews"), orderBy("createdAt", "desc"), limit(100)), snap => {
     allReviews = snap.docs.map(d => ({ id: d.id, ...d.data() }));
   }));
+
   unsubs.push(onSnapshot(collection(db, "promotions"), snap => {
     allPromos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     renderPromos();
   }));
+
   let __firstSupportLoad = true;
-unsubs.push(onSnapshot(query(collection(db, "support"), orderBy("createdAt", "desc")), snap => {
-  const newList = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  if (!__firstSupportLoad && newList.length > allSupport.length){
-    const oldIds = new Set(allSupport.map(s => s.id));
-    newList.filter(s => !oldIds.has(s.id)).forEach(t => notifyNewTicket(t));
-  }
-  __firstSupportLoad = false;
-  allSupport = newList;
-  const open = allSupport.filter(s => (s.status || "open") === "open").length;
-  const nv = $("#navSupport"); nv.textContent = open; nv.hidden = open === 0;
-  renderSupport();
-}));
+  unsubs.push(onSnapshot(query(collection(db, "support"), orderBy("createdAt", "desc")), snap => {
+    const prevLen = allSupport.length;
+    const newList = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    if (!__firstSupportLoad && newList.length > prevLen){
+      const t = newList[0];
+      if (t) notifyNewTicket(t);
+    }
+    __firstSupportLoad = false;
+    allSupport = newList;
+    const open = allSupport.filter(s => (s.status || "open") === "open").length;
+    const nv = $("#navSupport"); nv.textContent = open; nv.hidden = open === 0;
+    renderSupport();
+  }));
+
   if (currentRole === "owner" || currentRole === "admin"){
     unsubs.push(onSnapshot(collection(db, "staff"), snap => {
       allStaff = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
       renderStaff();
     }));
   }
+
   if (currentRole !== "staff"){
     unsubs.push(onSnapshot(query(collection(db, "activity"), orderBy("at", "desc"), limit(50)), snap => {
       allActivity = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       renderActivity();
     }));
   }
+
   unsubs.push(onSnapshot(doc(db, "settings", "payment"), snap => {
     if (snap.exists()){ const d = snap.data();
       if ($("#setVoda")) $("#setVoda").value = d.vodafone || "";
@@ -931,7 +989,21 @@ $("#custSearch")?.addEventListener("input", (e) => { custFilter = e.target.value
 function renderProducts(){
   $("#productsSub").textContent = `${allProducts.length} product${allProducts.length===1?"":"s"}`;
   const w = $("#productsWrap");
-  if (!allProducts.length){ w.innerHTML = '<div class="empty">No products yet — click "+ New Product".</div>'; return; }
+  if (!allProducts.length){
+    w.innerHTML = `
+      <div class="empty" style="margin-bottom:16px">No products in Firestore yet — click "+ New Product" to add one.</div>
+      <div class="panel">
+        <div class="panel-title">// How to add products</div>
+        <p class="muted small" style="line-height:1.8">
+          1. Click <b>+ New Product</b> above<br>
+          2. Fill in the details (ID is a short slug like <code>vb-1000</code>)<br>
+          3. Save — it will appear on the store immediately<br>
+          <br>
+          The store loads products from Firestore. Whatever you add here = live on the site.
+        </p>
+      </div>`;
+    return;
+  }
   w.innerHTML = `<div class="tbl-wrap"><table>
     <thead><tr><th>Image</th><th>Product</th><th>Kind</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
     <tbody>${allProducts.map(p => `
@@ -959,6 +1031,8 @@ function renderProducts(){
 }
 
 $("#addProduct")?.addEventListener("click", () => openProductForm(null));
+$("#syncProducts")?.addEventListener("click", () => { renderProducts(); toast("Refreshed from Firestore"); });
+
 function openProductForm(p){
   $("#prodTitle").textContent = p ? "Edit Product" : "New Product";
   $("#pEditId").value = p ? p.id : "";
@@ -986,9 +1060,9 @@ $("#productForm").addEventListener("submit", async (e) => {
       status: $("#pStatus").value,
       updatedAt: serverTimestamp()
     }, { merge: true });
-    await logActivity("product_save", id, "Saved");
+    await logActivity("product_save", id, "Saved · " + $("#pPrice").value + " EGP");
     $("#modalProduct").classList.remove("on");
-    toast("Saved");
+    toast("Saved — live on store");
   } catch(e){ toast("Error: " + e.message); }
 });
 
@@ -1225,7 +1299,7 @@ $("#saveSettings")?.addEventListener("click", async () => {
       updatedAt: serverTimestamp()
     }, { merge: true });
     await logActivity("settings_save", "payment", "Updated");
-    toast("Saved");
+    toast("Saved — live on store");
   } catch(e){ toast("Error: " + e.message); }
 });
 $("#saveSocial")?.addEventListener("click", async () => {
@@ -1235,7 +1309,7 @@ $("#saveSocial")?.addEventListener("click", async () => {
       updatedAt: serverTimestamp()
     }, { merge: true });
     await logActivity("settings_save", "social", "Updated");
-    toast("Saved");
+    toast("Saved — live on store");
   } catch(e){ toast("Error: " + e.message); }
 });
 
@@ -1246,7 +1320,7 @@ $("#saveBanner")?.addEventListener("click", async () => {
       on: true, updatedAt: serverTimestamp()
     });
     await logActivity("banner_save", "-", "Updated");
-    toast("Banner saved");
+    toast("Banner saved — live on store");
   } catch(e){ toast("Error: " + e.message); }
 });
 $("#clearBanner")?.addEventListener("click", async () => {
@@ -1285,160 +1359,6 @@ $$("[data-danger]").forEach(btn => {
     } catch(e){ toast("Error: " + e.message); }
   });
 });
-/* ============================================================
-   NOTIFICATIONS FOR NEW SUPPORT TICKETS
-   ============================================================ */
-function playBeep(){
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.frequency.value = 880; osc.type = "sine";
-    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-    osc.start(); osc.stop(ctx.currentTime + 0.35);
-    setTimeout(() => {
-      const osc2 = ctx.createOscillator();
-      const gain2 = ctx.createGain();
-      osc2.connect(gain2); gain2.connect(ctx.destination);
-      osc2.frequency.value = 1100; osc2.type = "sine";
-      gain2.gain.setValueAtTime(0.2, ctx.currentTime);
-      gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-      osc2.start(); osc2.stop(ctx.currentTime + 0.35);
-    }, 200);
-  } catch(e){}
-}
-
-function notifyNewTicket(t){
-  toast("🔔 New ticket from " + (t.name || "customer"));
-  playBeep();
-  if ("Notification" in window && Notification.permission === "granted"){
-    try {
-      const n = new Notification("GAMENEST · New Support Ticket", {
-        body: (t.name || "Customer") + ": " + (t.message || "").slice(0, 100),
-        tag: "ticket-" + t.id,
-        requireInteraction: true
-      });
-      n.onclick = () => { window.focus(); n.close(); };
-    } catch(e){}
-  }
-}
-
-const notifBtn = $("#notifBtn");
-if ("Notification" in window){
-  if (Notification.permission === "granted"){
-    notifBtn.style.display = "none";
-  } else if (Notification.permission === "denied"){
-    notifBtn.style.display = "none";
-  } else {
-    notifBtn.style.display = "";
-    notifBtn.addEventListener("click", async () => {
-      try {
-        const perm = await Notification.requestPermission();
-        if (perm === "granted"){
-          notifBtn.textContent = "🔔 On";
-          notifBtn.disabled = true;
-          toast("Notifications enabled");
-          setTimeout(() => notifBtn.style.display = "none", 1200);
-        } else {
-          notifBtn.style.display = "none";
-          toast("Notifications blocked");
-        }
-      } catch(e){}
-    });
-  }
-}
-function playBeep(){
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator(); const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.frequency.value = 880; osc.type = "sine";
-    gain.gain.setValueAtTime(0.15, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-    osc.start(); osc.stop(ctx.currentTime + 0.3);
-    setTimeout(() => {
-      const o2 = ctx.createOscillator(); const g2 = ctx.createGain();
-      o2.connect(g2); g2.connect(ctx.destination);
-      o2.frequency.value = 1100; o2.type = "sine";
-      g2.gain.setValueAtTime(0.15, ctx.currentTime);
-      g2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-      o2.start(); o2.stop(ctx.currentTime + 0.3);
-    }, 180);
-  } catch(e){}
-}
-function notify(title, body){
-  toast("🔔 " + title);
-  playBeep();
-  if ("Notification" in window && Notification.permission === "granted"){
-    try { new Notification("GAMENEST · " + title, { body }); } catch(e){}
-  }
-}
-const notifBtn = $("#notifBtn");
-if (notifBtn && "Notification" in window){
-  if (Notification.permission === "granted"){ notifBtn.style.display = "none"; }
-  else if (Notification.permission === "denied"){ notifBtn.style.display = "none"; }
-  else {
-    notifBtn.style.display = "";
-    notifBtn.addEventListener("click", async () => {
-      const perm = await Notification.requestPermission();
-      if (perm === "granted"){
-        notifBtn.textContent = "🔔 On";
-        toast("Notifications enabled");
-        setTimeout(() => notifBtn.style.display = "none", 1200);
-      } else { notifBtn.style.display = "none"; }
-    });
-  }
-}
-function playBeep(){
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator(); const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.frequency.value = 880; osc.type = "sine";
-    gain.gain.setValueAtTime(0.15, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-    osc.start(); osc.stop(ctx.currentTime + 0.3);
-    setTimeout(() => {
-      const o2 = ctx.createOscillator(); const g2 = ctx.createGain();
-      o2.connect(g2); g2.connect(ctx.destination);
-      o2.frequency.value = 1100; o2.type = "sine";
-      g2.gain.setValueAtTime(0.15, ctx.currentTime);
-      g2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-      o2.start(); o2.stop(ctx.currentTime + 0.3);
-    }, 180);
-  } catch(e){}
-}
-
-function notifyNewTicket(t){
-  toast("🔔 New ticket from " + (t.name || "customer"));
-  playBeep();
-  if ("Notification" in window && Notification.permission === "granted"){
-    try {
-      new Notification("GAMENEST · New Support Ticket", {
-        body: (t.name || "Customer") + ": " + (t.message || "").slice(0, 100)
-      });
-    } catch(e){}
-  }
-}
-
-const notifBtn = $("#notifBtn");
-if (notifBtn && "Notification" in window){
-  if (Notification.permission === "granted"){ notifBtn.style.display = "none"; }
-  else if (Notification.permission === "denied"){ notifBtn.style.display = "none"; }
-  else {
-    notifBtn.style.display = "";
-    notifBtn.addEventListener("click", async () => {
-      const perm = await Notification.requestPermission();
-      if (perm === "granted"){
-        notifBtn.textContent = "🔔 On";
-        toast("Notifications enabled");
-        setTimeout(() => notifBtn.style.display = "none", 1200);
-      } else { notifBtn.style.display = "none"; }
-    });
-  }
-}
 
 window.addEventListener("beforeunload", () => unsubs.forEach(u => { try { u(); } catch{} }));
 </script>
