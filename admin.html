@@ -865,6 +865,34 @@ $$("[data-clear]").forEach(b => b.addEventListener("click", async () => {
     loadAll();
   } catch(e){ toast("Clear failed", "err"); }
 }));
+  /* PATCH: handle alternate Firestore field names */
+function renderProducts(){
+  const el = $("#productsList");
+  if (!PRODUCTS.length){ el.innerHTML = '<div class="empty">No products yet — add one above</div>'; return; }
+  el.innerHTML = PRODUCTS.map(p => {
+    const name  = p.name || p.title || p.productName || p.product_name || p.label || p.id;
+    const cat   = p.category || p.cat || p.type || p.kind || "—";
+    const price = p.price ?? p.amount ?? p.cost ?? 0;
+    return `
+    <div class="row">
+      <div class="row-top">
+        <div>
+          <div class="row-id">${esc(name)}</div>
+          <div class="row-meta">${esc(cat)}</div>
+        </div>
+        <div class="row-price">${fmt(price)} EGP</div>
+      </div>
+      <div class="row-actions">
+        <button class="btn danger sm" data-delproduct="${p.id}" type="button">DELETE</button>
+      </div>
+    </div>`;
+  }).join("");
+  el.querySelectorAll("[data-delproduct]").forEach(b => b.addEventListener("click", async () => {
+    if (!confirm("Delete this product?")) return;
+    try { await deleteDoc(doc(db, "products", b.dataset.delproduct)); toast("Deleted", "ok"); loadProducts(); }
+    catch(e){ toast("Delete failed", "err"); }
+  }));
+}
 </script>
 </body>
 </html>
