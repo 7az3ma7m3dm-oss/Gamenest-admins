@@ -2,399 +2,528 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>GAMENEST // Owner Console</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<title>GAMENEST // ADMIN</title>
+<link rel="icon" href="logo.png">
 <style>
-:root{--bg:#0a0a0a;--panel:#111;--border:#1f1f1f;--border-2:#2a2a2a;--text:#f2f2f2;--muted:#8a8a8a;--dim:#4a4a4a;--accent:#fff;--danger:#ff4a4a;--success:#5fc85f;--warn:#ffb454;--info:#5fc8ff;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;--sans:"Rajdhani",system-ui,-apple-system,sans-serif}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.5;overflow-x:hidden}
-a{color:inherit;text-decoration:none}
-button{font-family:inherit;cursor:pointer;background:none;border:none;color:inherit}
-input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+:root{
+  --bg:#0a0a0a;--panel:#111;--panel-2:#0d0d0d;
+  --border:#1f1f1f;--border-2:#2a2a2a;
+  --text:#f2f2f2;--muted:#8a8a8a;--dim:#4a4a4a;
+  --accent:#fff;--ok:#5fc85f;--warn:#ffb454;--err:#ff4a4a;--info:#5aa9ff;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --r:10px;--sw:240px;--hh:56px;
+}
+*,*::before,*::after{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg);color:var(--text);font-family:var(--sans);
+  font-size:15px;line-height:1.5;min-height:100vh;
+  padding-bottom:env(safe-area-inset-bottom);
+}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-track{background:#0a0a0a}
-::-webkit-scrollbar-thumb{background:#2a2a2a}
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:22px}
-.login-box{background:var(--panel);border:1px solid var(--border-2);padding:44px 36px;width:100%;max-width:420px}
-.login-box h1{font-family:var(--mono);font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
-.login-box h2{font-size:26px;font-weight:900;letter-spacing:.02em;text-transform:uppercase;margin-bottom:26px}
-.field{margin-bottom:16px}
-.field label{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-bottom:7px}
-.field input,.field select,.field textarea{width:100%;background:transparent;border:none;border-bottom:1.5px solid var(--border);color:var(--text);padding:10px 0;outline:none;transition:.2s}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
-.field textarea{resize:vertical;min-height:70px}
-.btn{padding:12px 20px;font-family:var(--mono);font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;transition:.2s;border:1px solid;display:inline-flex;align-items:center;justify-content:center;gap:8px}
-.btn-primary{background:var(--accent);color:var(--bg);border-color:var(--accent)}
-.btn-primary:hover{background:transparent;color:var(--accent)}
-.btn-ghost{border-color:var(--border-2);color:var(--muted)}
-.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
-.btn-danger{border-color:var(--danger);color:var(--danger)}
-.btn-danger:hover{background:var(--danger);color:var(--bg)}
-.btn-success{border-color:var(--success);color:var(--success)}
-.btn-success:hover{background:var(--success);color:var(--bg)}
-.btn-warn{border-color:var(--warn);color:var(--warn)}
-.btn-warn:hover{background:var(--warn);color:var(--bg)}
-.btn-info{border-color:var(--info);color:var(--info)}
-.btn-info:hover{background:var(--info);color:var(--bg)}
-.btn-sm{padding:6px 12px;font-size:10px;letter-spacing:.12em}
-.btn-block{width:100%}
-.login-msg{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--danger);min-height:1em;margin-top:14px;text-align:center}
-#app{display:none;min-height:100vh}
-#app.on{display:flex}
-.sidebar{background:#0d0d0d;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;width:240px;flex-shrink:0}
-.sidebar-head{padding:20px 18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.sidebar-brand{font-family:var(--mono);font-size:13px;font-weight:900;letter-spacing:.22em;text-transform:uppercase}
-.sidebar-brand small{color:var(--dim);font-weight:500;display:block;font-size:9px;letter-spacing:.24em;margin-top:4px}
-.sidebar-close{display:none;font-size:22px;color:var(--muted)}
-.nav-section{padding:14px 0 6px}
-.nav-title{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim);padding:6px 18px}
-.nav-item{display:flex;align-items:center;gap:11px;padding:10px 18px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--muted);transition:.15s;border-left:2px solid transparent;cursor:pointer;text-transform:uppercase;font-weight:600}
-.nav-item:hover{color:var(--text);background:rgba(255,255,255,.03)}
-.nav-item.active{color:var(--accent);background:rgba(255,255,255,.05);border-left-color:var(--accent)}
-.nav-item .ico{width:16px;text-align:center;flex-shrink:0;font-size:13px}
-.nav-item .count{margin-left:auto;background:var(--accent);color:var(--bg);font-size:9px;font-weight:800;padding:1px 6px;border-radius:8px;font-family:var(--mono)}
-.nav-item.hidden{display:none}
-.main{display:flex;flex-direction:column;min-width:0;flex:1}
-.topbar{position:sticky;top:0;z-index:40;background:#0a0a0a;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 22px;min-height:60px}
-.menu-btn{display:none;font-size:22px;color:var(--text);width:36px;height:36px;align-items:center;justify-content:center}
-.topbar-search{flex:1;max-width:400px;position:relative}
-.topbar-search input{width:100%;background:var(--panel);border:1px solid var(--border);color:var(--text);padding:8px 12px 8px 32px;font-size:12px;outline:none}
-.topbar-search input:focus{border-color:var(--accent)}
-.topbar-search .sico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:13px}
-.topbar-user{display:flex;align-items:center;gap:12px}
-.topbar-user .meta{text-align:right;font-family:var(--mono);font-size:10px;letter-spacing:.1em}
-.topbar-user .meta .em{color:var(--text);font-size:11px}
-.topbar-user .meta .rl{color:var(--dim);font-size:9px;text-transform:uppercase;margin-top:2px}
-.content{padding:26px 22px 80px;flex:1;min-width:0}
-.view{display:none}
-.view.on{display:block}
-.view-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:24px}
-.view-title{font-family:var(--mono);font-size:16px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
-.view-sub{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-top:4px}
-.view-actions{display:flex;gap:8px;flex-wrap:wrap}
-.grid-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px}
-.stat{background:var(--panel);border:1px solid var(--border);padding:20px}
-.stat .k{font-family:var(--mono);font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
-.stat .v{font-family:var(--mono);font-size:24px;font-weight:900;color:var(--accent);line-height:1}
-.stat .d{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--dim);margin-top:8px}
-.stat.success .v{color:var(--success)}
-.stat.warn .v{color:var(--warn)}
-.stat.danger .v{color:var(--danger)}
-.stat.info .v{color:var(--info)}
-.panel{background:var(--panel);border:1px solid var(--border);padding:20px}
-.panel-title{font-family:var(--mono);font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.tbl-wrap{overflow-x:auto;background:var(--panel);border:1px solid var(--border)}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);font-weight:600;padding:12px 14px;border-bottom:1px solid var(--border);background:#0d0d0d}
-td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
-tr:hover td{background:rgba(255,255,255,.02)}
-td.mono{font-family:var(--mono);font-size:11.5px}
-.badge{display:inline-block;padding:4px 10px;font-family:var(--mono);font-size:9.5px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;border:1px solid}
-.badge.pending{border-color:var(--warn);color:var(--warn);background:rgba(255,180,84,.08)}
-.badge.paid{border-color:var(--info);color:var(--info);background:rgba(95,200,255,.08)}
-.badge.processing{border-color:#c77dff;color:#c77dff;background:rgba(199,125,255,.08)}
-.badge.delivered,.badge.approved,.badge.success,.badge.active{border-color:var(--success);color:var(--success);background:rgba(95,200,95,.08)}
-.badge.rejected,.badge.failed,.badge.banned{border-color:var(--danger);color:var(--danger);background:rgba(255,74,74,.08)}
-.badge.owner{border-color:var(--accent);color:var(--accent);background:rgba(255,255,255,.08)}
-.badge.admin{border-color:var(--info);color:var(--info);background:rgba(95,200,255,.08)}
-.badge.staff{border-color:var(--muted);color:var(--muted)}
-.badge.refunded{border-color:var(--info);color:var(--info)}
-.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.chip{padding:7px 13px;border:1px solid var(--border-2);color:var(--muted);font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;transition:.15s;cursor:pointer}
-.chip:hover{color:var(--text);border-color:var(--accent)}
-.chip.on{background:var(--accent);color:var(--bg);border-color:var(--accent)}
-.empty{background:var(--panel);border:1px dashed var(--border-2);padding:50px 20px;text-align:center;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
-.activity{display:flex;flex-direction:column;gap:8px}
-.act{background:var(--panel);border:1px solid var(--border);padding:12px 14px;display:flex;gap:14px;align-items:flex-start;font-size:12px}
-.act .t{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.1em;white-space:nowrap;flex-shrink:0;min-width:140px}
-.act .b{flex:1}
-.act .who{font-family:var(--mono);font-size:10px;color:var(--info);letter-spacing:.1em}
-.modal{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.85);backdrop-filter:blur(8px)}
-.modal.on{display:flex}
-.modal-box{background:var(--bg);border:1px solid var(--border-2);width:100%;max-width:560px;max-height:90vh;overflow-y:auto;padding:30px 26px;position:relative}
-.modal-box.wide{max-width:880px}
-.modal-close{position:absolute;top:10px;right:14px;font-size:22px;color:var(--muted);width:30px;height:30px;display:flex;align-items:center;justify-content:center}
-.modal-close:hover{color:var(--accent)}
-.modal h3{font-family:var(--mono);font-size:13px;font-weight:900;letter-spacing:.2em;text-transform:uppercase;margin-bottom:20px;color:var(--accent)}
-.modal .row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.modal .actions{display:flex;gap:10px;margin-top:20px}
-.modal .actions .btn{flex:1}
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--accent);color:var(--bg);padding:12px 20px;font-family:var(--mono);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:0;pointer-events:none;transition:.25s;z-index:500;box-shadow:0 0 30px rgba(255,255,255,.35)}
-.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
-.row-flex{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.muted{color:var(--muted)}
-.dim{color:var(--dim)}
-.mono{font-family:var(--mono)}
-.small{font-size:11px}
-.danger-zone{border:1px solid var(--danger);background:rgba(255,74,74,.04);padding:22px;margin-top:14px}
-.danger-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid var(--border)}
-.danger-row:last-child{border-bottom:none}
-.danger-row .lbl{font-size:13px}
-.danger-row .desc{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.06em;margin-top:3px}
-.timeline{display:flex;flex-direction:column;gap:0;margin-top:16px;border-left:2px solid var(--border);padding-left:16px}
-.tl-item{position:relative;padding:10px 0}
-.tl-item::before{content:"";position:absolute;left:-23px;top:14px;width:12px;height:12px;border-radius:50%;background:var(--accent);border:2px solid var(--bg)}
-.tl-item.done::before{background:var(--success)}
-.tl-item.fail::before{background:var(--danger)}
-.tl-time{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:.08em}
-.tl-text{font-size:13px;margin-top:2px}
-.tl-who{font-family:var(--mono);font-size:10px;color:var(--info);letter-spacing:.08em;margin-top:2px}
-.proof-view{background:#0d0d0d;border:1px solid var(--border-2);padding:12px;text-align:center;margin-top:10px}
-.proof-view img{max-width:100%;max-height:400px;object-fit:contain}
-.proof-view .filename{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:8px;word-break:break-all}
-.od-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;margin-bottom:16px}
-.od-cell{display:flex;flex-direction:column;gap:2px}
-.od-cell .k{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
-.od-cell .v{font-family:var(--mono);font-size:13px;color:var(--text);word-break:break-word}
+::-webkit-scrollbar-thumb{background:#2a2a2a;border-radius:4px}
+a{color:inherit;text-decoration:none}
+button,input,select,textarea{font-family:inherit;font-size:inherit;color:inherit}
+button{cursor:pointer;border:none;background:none;padding:0}
+:focus-visible{outline:2px solid #fff;outline-offset:2px;border-radius:4px}
+
+/* ========== LOGIN ========== */
+#login{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:var(--bg);z-index:1000;padding:20px;
+}
+#login.hidden{display:none}
+.login-box{
+  width:100%;max-width:380px;background:var(--panel);
+  border:1px solid var(--border);border-radius:var(--r);padding:32px 24px;
+}
+.login-box h1{
+  font-family:var(--mono);font-size:12px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--muted);margin:0 0 8px;font-weight:600;
+}
+.login-box h2{
+  font-family:var(--mono);font-size:22px;letter-spacing:.1em;
+  text-transform:uppercase;margin:0 0 24px;color:#fff;
+}
+.login-box label{
+  display:block;font-family:var(--mono);font-size:10px;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;
+}
+.login-box input{
+  width:100%;background:var(--bg);border:1px solid var(--border-2);
+  border-radius:6px;padding:13px 14px;margin-bottom:16px;color:#fff;outline:none;
+}
+.login-box input:focus{border-color:#fff}
+.login-box button{
+  width:100%;background:#fff;color:#0a0a0a;padding:14px;border-radius:6px;
+  font-family:var(--mono);font-size:12px;font-weight:800;
+  letter-spacing:.2em;text-transform:uppercase;margin-top:8px;
+}
+.login-box button:disabled{opacity:.5;cursor:not-allowed}
+.login-err{
+  font-family:var(--mono);font-size:11px;color:var(--err);
+  text-align:center;min-height:16px;margin-top:12px;
+}
+
+/* ========== APP SHELL ========== */
+#app{display:none}
+#app.show{display:block}
+
+/* ========== TOPBAR ========== */
+.topbar{
+  position:sticky;top:0;z-index:100;height:var(--hh);
+  background:rgba(10,10,10,.94);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;padding:0 14px;
+}
+.topbar-brand{display:flex;align-items:center;gap:10px}
+.topbar-brand img{width:28px;height:28px;object-fit:contain}
+.topbar-brand span{
+  font-family:var(--mono);font-size:13px;font-weight:800;
+  letter-spacing:.2em;text-transform:uppercase;
+}
+.topbar-brand small{color:var(--dim);font-size:10px;letter-spacing:.24em;margin-left:6px}
+.menu-btn{
+  width:40px;height:40px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--border-2);background:var(--panel);
+}
+.menu-btn svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2}
+
+/* ========== SIDEBAR ========== */
+.sidebar{
+  position:fixed;top:0;left:0;bottom:0;width:var(--sw);
+  background:var(--panel-2);border-right:1px solid var(--border);
+  transform:translateX(-100%);
+  transition:transform .28s cubic-bezier(.22,1,.36,1);
+  z-index:200;display:flex;flex-direction:column;padding:16px 12px;overflow-y:auto;
+}
+.sidebar.open{transform:translateX(0)}
+.side-brand{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 10px 20px;border-bottom:1px solid var(--border);margin-bottom:14px;
+}
+.side-brand img{width:26px;height:26px}
+.side-brand span{
+  font-family:var(--mono);font-size:13px;font-weight:800;
+  letter-spacing:.2em;text-transform:uppercase;
+}
+.side-nav{display:flex;flex-direction:column;gap:2px;flex:1}
+.side-nav a{
+  display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:8px;
+  font-family:var(--mono);font-size:11.5px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+  transition:background .18s,color .18s;
+}
+.side-nav a svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;flex:0 0 16px}
+.side-nav a:hover{background:rgba(255,255,255,.04);color:#fff}
+.side-nav a.active{background:rgba(255,255,255,.08);color:#fff}
+.side-foot{border-top:1px solid var(--border);padding-top:12px;margin-top:12px}
+.side-foot button{
+  width:100%;text-align:left;padding:11px 12px;border-radius:8px;
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--err);
+}
+.side-foot button:hover{background:rgba(255,74,74,.08)}
+.scrim{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);
+  backdrop-filter:blur(2px);z-index:150;opacity:0;pointer-events:none;
+  transition:opacity .25s;
+}
+.scrim.show{opacity:1;pointer-events:auto}
+
+/* ========== MAIN ========== */
+main{padding:18px 14px 90px;max-width:1200px;margin:0 auto}
+.page{display:none}
+.page.active{display:block;animation:fi .3s ease}
+@keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.page-head{margin-bottom:18px}
+.page-head .kicker{
+  font-family:var(--mono);font-size:10px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--dim);
+}
+.page-head h2{
+  font-family:var(--mono);font-size:20px;letter-spacing:.08em;
+  text-transform:uppercase;margin:6px 0 0;
+}
+.page-head p{color:var(--muted);font-size:13px;margin:6px 0 0}
+
+/* ========== STATS ========== */
+.stats{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:10px;margin-bottom:18px;
+}
+.stat{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px 14px;
+}
+.stat .lbl{
+  font-family:var(--mono);font-size:9.5px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--dim);margin-bottom:8px;
+}
+.stat .val{font-family:var(--mono);font-size:22px;font-weight:800;color:#fff}
+.stat .sub{font-size:11px;color:var(--muted);margin-top:4px}
+
+/* ========== PANELS ========== */
+.panel{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px;margin-bottom:14px;
+}
+.panel-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin-bottom:14px;flex-wrap:wrap;
+}
+.panel-head h3{
+  font-family:var(--mono);font-size:12px;
+  letter-spacing:.2em;text-transform:uppercase;margin:0;
+}
+
+/* ========== BUTTONS ========== */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:10px 16px;border-radius:8px;
+  font-family:var(--mono);font-size:10.5px;font-weight:800;
+  letter-spacing:.16em;text-transform:uppercase;
+  background:#fff;color:#0a0a0a;border:1px solid #fff;
+  transition:transform .15s,opacity .15s;
+}
+.btn:active{transform:scale(.96)}
+.btn.ghost{background:transparent;color:#fff;border-color:var(--border-2)}
+.btn.danger{background:transparent;color:var(--err);border-color:rgba(255,74,74,.35)}
+.btn.sm{padding:7px 12px;font-size:10px}
+
+/* ========== BADGES ========== */
+.badge{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;
+  font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  padding:3px 9px;border-radius:10px;border:1px solid;
+}
+.badge.pending{color:var(--warn);border-color:rgba(255,180,84,.35);background:rgba(255,180,84,.08)}
+.badge.paid,.badge.processing{color:var(--info);border-color:rgba(90,169,255,.35);background:rgba(90,169,255,.08)}
+.badge.delivered{color:var(--ok);border-color:rgba(95,200,95,.35);background:rgba(95,200,95,.08)}
+.badge.rejected,.badge.refunded{color:var(--err);border-color:rgba(255,74,74,.35);background:rgba(255,74,74,.08)}
+.badge.open{color:var(--warn);border-color:rgba(255,180,84,.35);background:rgba(255,180,84,.08)}
+.badge.closed{color:var(--muted);border-color:var(--border-2)}
+
+/* ========== FIELDS ========== */
+.field{margin-bottom:12px}
+.field label{
+  display:block;font-family:var(--mono);font-size:10px;
+  letter-spacing:.24em;text-transform:uppercase;color:var(--dim);margin-bottom:6px;
+}
+.field input,.field select,.field textarea{
+  width:100%;background:var(--bg);border:1px solid var(--border-2);
+  border-radius:6px;padding:11px 12px;color:#fff;outline:none;font-size:14px;
+}
+.field textarea{min-height:90px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#fff}
+
+/* ========== LISTS ========== */
+.list{display:flex;flex-direction:column;gap:10px}
+.row{background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.row-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.row-id{font-family:var(--mono);font-size:12px;font-weight:800;color:#fff;letter-spacing:.08em}
+.row-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.row-price{font-family:var(--mono);font-size:14px;font-weight:800;color:#fff;white-space:nowrap}
+.row-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:8px 14px;
+  margin-top:10px;padding-top:10px;border-top:1px dashed var(--border-2);
+}
+.row-grid .k{
+  font-family:var(--mono);font-size:9px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dim);
+}
+.row-grid .v{font-size:13px;color:#e8e8e8;word-break:break-word}
+.row-actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+
+/* ========== TOAST ========== */
+.toast{
+  position:fixed;left:50%;bottom:80px;transform:translateX(-50%) translateY(20px);
+  background:#fff;color:#0a0a0a;padding:12px 20px;border-radius:8px;
+  font-family:var(--mono);font-size:11px;font-weight:800;
+  letter-spacing:.14em;text-transform:uppercase;
+  opacity:0;pointer-events:none;transition:opacity .25s,transform .25s;
+  z-index:500;max-width:90vw;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.err{background:var(--err);color:#fff}
+.toast.ok{background:var(--ok);color:#0a0a0a}
+
+/* ========== LOADING ========== */
+.loading{
+  padding:30px;text-align:center;font-family:var(--mono);
+  font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);
+}
+.empty{
+  padding:40px 20px;text-align:center;color:var(--muted);
+  border:1px dashed var(--border-2);border-radius:10px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+}
+
+/* ========== DESKTOP ========== */
+@media(min-width:900px){
+  .menu-btn{display:none}
+  .sidebar{transform:translateX(0)}
+  .topbar{padding-left:calc(var(--sw) + 14px)}
+  main{margin-left:var(--sw);padding:24px 24px 40px;max-width:calc(1200px + var(--sw))}
+  .scrim{display:none}
+  .row-grid{grid-template-columns:repeat(3,1fr)}
+}
 </style>
 </head>
 <body>
 
-<div class="login-wrap" id="loginWrap">
-  <form class="login-box" id="loginForm">
-    <h1>[ GAMENEST // OWNER_CONSOLE ]</h1>
-    <h2>Secure Access</h2>
-    <div class="field"><label>Email</label><input type="email" id="lgEmail" required autocomplete="email"></div>
-    <div class="field"><label>Password</label><input type="password" id="lgPass" required autocomplete="current-password"></div>
-    <button type="submit" class="btn btn-primary btn-block" id="lgBtn">Authenticate</button>
-    <p class="login-msg" id="lgMsg"></p>
-  </form>
-</div>
-
-<div id="app">
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-head">
-      <div class="sidebar-brand">GAMENEST<small>OWNER_CONSOLE v2.1</small></div>
-      <button class="sidebar-close" id="sidebarClose">×</button>
-    </div>
-    <div class="nav-section">
-      <div class="nav-title">// Main</div>
-      <div class="nav-item active" data-view="dashboard"><span class="ico">📊</span>Dashboard</div>
-      <div class="nav-item" data-view="orders"><span class="ico">🛒</span>Orders<span class="count" id="navOrders" hidden>0</span></div>
-      <div class="nav-item" data-view="products"><span class="ico">📦</span>Products</div>
-      <div class="nav-item" data-view="customers"><span class="ico">👥</span>Customers</div>
-      <div class="nav-item" data-view="promotions"><span class="ico">🎟️</span>Promotions</div>
-      <div class="nav-item" data-view="support"><span class="ico">🎫</span>Support<span class="count" id="navSupport" hidden>0</span></div>
-      <div class="nav-item" data-view="website"><span class="ico">📢</span>Website</div>
-      <div class="nav-item" data-view="analytics"><span class="ico">📈</span>Analytics</div>
-    </div>
-    <div class="nav-section" data-role="admin">
-      <div class="nav-title">// Management</div>
-      <div class="nav-item" data-view="staff"><span class="ico">👨‍💼</span>Staff</div>
-      <div class="nav-item" data-view="security"><span class="ico">🔐</span>Security</div>
-      <div class="nav-item" data-view="settings"><span class="ico">⚙️</span>Settings</div>
-    </div>
-    <div class="nav-section" data-role="owner">
-      <div class="nav-title">// Owner Only</div>
-      <div class="nav-item" data-view="danger" style="color:var(--danger)"><span class="ico">🗑️</span>Danger Zone</div>
-    </div>
-  </aside>
-  <div class="sidebar-backdrop" id="sidebarBd"></div>
-
-  <div class="main">
-    <div class="topbar">
-      <button class="menu-btn" id="menuBtn">☰</button>
-      <div class="topbar-search">
-        <span class="sico">🔍</span>
-        <input type="text" id="globalSearch" placeholder="Search orders, customers, products...">
-      </div>
-      <div class="topbar-user">
-        <div class="meta">
-          <div class="em" id="uEmail">—</div>
-          <div class="rl"><span id="uRole">—</span></div>
-        </div>
-        <button class="btn btn-ghost btn-sm" id="notifBtn" style="display:none">🔔 Enable</button>
-        <button class="btn btn-ghost btn-sm" id="logoutBtn">Logout</button>
-      </div>
-    </div>
-
-    <div class="content">
-      <section class="view on" id="v-dashboard">
-        <div class="view-head">
-          <div><div class="view-title">// Dashboard</div><div class="view-sub">Live overview of your store</div></div>
-          <div class="view-actions"><button class="btn btn-ghost btn-sm" id="refreshDash">↻ Refresh</button></div>
-        </div>
-        <div class="grid-stats" id="statGrid"></div>
-        <div class="grid-stats" style="grid-template-columns:1fr 1fr">
-          <div class="panel"><div class="panel-title">// Recent Activity</div><div class="activity" id="recentActivity"></div></div>
-          <div class="panel"><div class="panel-title">// Quick Stats</div><div id="quickStats"></div></div>
-        </div>
-      </section>
-
-      <section class="view" id="v-orders">
-        <div class="view-head">
-          <div><div class="view-title">// Orders</div><div class="view-sub" id="ordersSub">Manage and process incoming orders</div></div>
-          <div class="view-actions"><button class="btn btn-ghost btn-sm" id="exportOrders">Export CSV</button></div>
-        </div>
-        <div class="filters" id="orderFilters">
-          <button class="chip on" data-f="all">All</button>
-          <button class="chip" data-f="pending">Pending</button>
-          <button class="chip" data-f="paid">Paid</button>
-          <button class="chip" data-f="processing">Processing</button>
-          <button class="chip" data-f="delivered">Delivered</button>
-          <button class="chip" data-f="rejected">Rejected</button>
-          <button class="chip" data-f="refunded">Refunded</button>
-        </div>
-        <div id="ordersWrap"></div>
-      </section>
-
-      <section class="view" id="v-products">
-        <div class="view-head">
-          <div><div class="view-title">// Products</div><div class="view-sub" id="productsSub">Manage catalog · prices update live on store</div></div>
-          <div class="view-actions">
-            <button class="btn btn-info btn-sm" id="seedProducts">📥 Load Defaults</button>
-            <button class="btn btn-ghost btn-sm" id="syncProducts">↻ Sync to Store</button>
-            <button class="btn btn-primary btn-sm" id="addProduct">+ New Product</button>
-          </div>
-        </div>
-        <div id="productsWrap"></div>
-      </section>
-
-      <section class="view" id="v-customers">
-        <div class="view-head">
-          <div><div class="view-title">// Customers</div><div class="view-sub" id="customersSub">All customers who placed orders</div></div>
-        </div>
-        <div class="field" style="max-width:320px;margin-bottom:16px">
-          <input type="text" id="custSearch" placeholder="Search by name, email, phone...">
-        </div>
-        <div id="customersWrap"></div>
-      </section>
-
-      <section class="view" id="v-promotions">
-        <div class="view-head">
-          <div><div class="view-title">// Promotions</div><div class="view-sub" id="promosSub">Promo codes and discounts</div></div>
-          <div class="view-actions"><button class="btn btn-primary btn-sm" id="addPromo">+ New Promo</button></div>
-        </div>
-        <div id="promosWrap"></div>
-      </section>
-
-      <section class="view" id="v-support">
-        <div class="view-head">
-          <div><div class="view-title">// Support Tickets</div><div class="view-sub" id="supportSub">Customer inquiries</div></div>
-          <div class="filters" id="supportFilters">
-            <button class="chip on" data-f="all">All</button>
-            <button class="chip" data-f="open">Open</button>
-            <button class="chip" data-f="replied">Replied</button>
-            <button class="chip" data-f="closed">Closed</button>
-          </div>
-        </div>
-        <div id="supportWrap"></div>
-      </section>
-
-      <section class="view" id="v-website">
-        <div class="view-head">
-          <div><div class="view-title">// Website Content</div><div class="view-sub">Banners, announcements, maintenance</div></div>
-        </div>
-        <div class="grid-stats" style="grid-template-columns:1fr 1fr;gap:18px">
-          <div class="panel">
-            <div class="panel-title">// Homepage Banner</div>
-            <div class="field"><label>Announcement Text</label><input type="text" id="bannerText" placeholder="e.g. 20% OFF this weekend!"></div>
-            <div class="field"><label>Link (optional)</label><input type="text" id="bannerLink" placeholder="#vbucks"></div>
-            <div class="row-flex">
-              <button class="btn btn-primary btn-sm" id="saveBanner">Save Banner</button>
-              <button class="btn btn-danger btn-sm" id="clearBanner">Disable Banner</button>
-            </div>
-          </div>
-          <div class="panel">
-            <div class="panel-title">// Maintenance Mode</div>
-            <p class="muted small" style="margin-bottom:14px">When enabled, visitors see a "Coming back soon" page.</p>
-            <div class="row-flex">
-              <button class="btn btn-warn btn-sm" id="toggleMaintenance">Toggle Maintenance</button>
-              <span class="badge" id="maintStatus">OFF</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="view" id="v-analytics">
-        <div class="view-head">
-          <div><div class="view-title">// Analytics</div><div class="view-sub">Sales and revenue insights</div></div>
-        </div>
-        <div class="grid-stats" id="analyticsStats"></div>
-        <div class="panel">
-          <div class="panel-title">// Revenue by Product</div>
-          <div id="revenueByProduct"></div>
-        </div>
-      </section>
-
-      <section class="view" id="v-staff">
-        <div class="view-head">
-          <div><div class="view-title">// Staff Management</div><div class="view-sub">Admins, managers, and staff</div></div>
-          <div class="view-actions"><button class="btn btn-primary btn-sm" id="addStaff">+ Add Member</button></div>
-        </div>
-        <div id="staffWrap"></div>
-      </section>
-
-      <section class="view" id="v-security">
-        <div class="view-head">
-          <div><div class="view-title">// Security</div><div class="view-sub">Login history and activity logs</div></div>
-        </div>
-        <div class="panel" style="margin-bottom:18px">
-          <div class="panel-title">// Recent Logins</div>
-          <div id="loginHistory"></div>
-        </div>
-        <div class="panel">
-          <div class="panel-title">// Activity Logs</div>
-          <div id="activityLogs"></div>
-        </div>
-      </section>
-
-      <section class="view" id="v-settings">
-        <div class="view-head">
-          <div><div class="view-title">// Settings</div><div class="view-sub">Store configuration</div></div>
-        </div>
-        <div class="panel" style="margin-bottom:18px">
-          <div class="panel-title">// Payment Details</div>
-          <div class="row">
-            <div class="field"><label>Vodafone Cash Number</label><input type="text" id="setVoda" placeholder="0104 264 1080"></div>
-            <div class="field"><label>InstaPay Number</label><input type="text" id="setInsta" placeholder="0115 893 4284"></div>
-            <div class="field"><label>Telda Handle</label><input type="text" id="setTelda" placeholder="@itzadam"></div>
-            <div class="field"><label>Account Holder Name</label><input type="text" id="setHolder" placeholder="Adam Mohamed Omar"></div>
-          </div>
-          <button class="btn btn-primary btn-sm" id="saveSettings">Save Settings</button>
-        </div>
-        <div class="panel">
-          <div class="panel-title">// Social Links</div>
-          <div class="row">
-            <div class="field"><label>Instagram</label><input type="text" id="setIg" placeholder="https://instagram.com/..."></div>
-            <div class="field"><label>Discord Invite</label><input type="text" id="setDc" placeholder="https://discord.gg/..."></div>
-          </div>
-          <button class="btn btn-primary btn-sm" id="saveSocial">Save Social Links</button>
-        </div>
-      </section>
-
-      <section class="view" id="v-danger">
-        <div class="view-head">
-          <div><div class="view-title" style="color:var(--danger)">// Danger Zone</div><div class="view-sub">Irreversible actions — owner only</div></div>
-        </div>
-        <div class="danger-zone">
-          <div class="danger-row"><div><div class="lbl">Reset All Orders</div><div class="desc">Deletes every order permanently</div></div><button class="btn btn-danger btn-sm" data-danger="orders">Reset Orders</button></div>
-          <div class="danger-row"><div><div class="lbl">Reset All Reviews</div><div class="desc">Deletes every review permanently</div></div><button class="btn btn-danger btn-sm" data-danger="reviews">Reset Reviews</button></div>
-          <div class="danger-row"><div><div class="lbl">Reset All Products</div><div class="desc">Deletes every product permanently</div></div><button class="btn btn-danger btn-sm" data-danger="products">Reset Products</button></div>
-          <div class="danger-row"><div><div class="lbl">Disable Store</div><div class="desc">Turns on maintenance mode for all visitors</div></div><button class="btn btn-danger btn-sm" data-danger="disable">Disable Store</button></div>
-        </div>
-      </section>
-    </div>
+<!-- ========== LOGIN ========== -->
+<div id="login">
+  <div class="login-box">
+    <h1>// GAMENEST</h1>
+    <h2>ADMIN_ACCESS</h2>
+    <label>Email</label>
+    <input id="loginEmail" type="email" placeholder="Adam@gamenest.shop" autocomplete="username">
+    <label>Password</label>
+    <input id="loginPass" type="password" placeholder="••••••••" autocomplete="current-password">
+    <button id="loginBtn" type="button">AUTHENTICATE</button>
+    <div class="login-err" id="loginErr"></div>
   </div>
 </div>
 
-<div class="modal" id="modalOrder"><div class="modal-box wide"><button class="modal-close" data-close="modalOrder">×</button><h3 id="orderModalTitle">Order Details</h3><div id="orderModalBody"></div></div></div>
-<div class="modal" id="modalProof"><div class="modal-box wide"><button class="modal-close" data-close="modalProof">×</button><h3 id="proofTitle">Payment Proof</h3><div id="proofBody"></div></div></div>
-<div class="modal" id="modalProduct"><form class="modal-box" id="productForm"><button type="button" class="modal-close" data-close="modalProduct">×</button><h3 id="prodTitle">New Product</h3><input type="hidden" id="pEditId"><div class="field"><label>Product ID (slug)</label><input type="text" id="pSlug" required placeholder="vb-3000"></div><div class="field"><label>Product Name</label><input type="text" id="pName" required placeholder="3000 V-Bucks"></div><div class="row"><div class="field"><label>Price (EGP)</label><input type="number" id="pPrice" required min="0"></div><div class="field"><label>Kind</label><select id="pKind"><option value="vb">V-Bucks</option><option value="crew">Crew</option><option value="gift">Gift</option></select></div></div><div class="row"><div class="field"><label>Image Path</label><input type="text" id="pImg" placeholder="vbucks.png"></div><div class="field"><label>Stock</label><input type="number" id="pStock" value="999"></div></div><div class="field"><label>Status</label><select id="pStatus"><option value="active">Active</option><option value="disabled">Disabled</option></select></div><div class="actions"><button type="button" class="btn btn-ghost" data-close="modalProduct">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div></form></div>
-<div class="modal" id="modalPromo"><form class="modal-box" id="promoForm"><button type="button" class="modal-close" data-close="modalPromo">×</button><h3 id="promoTitle">New Promo Code</h3><input type="hidden" id="prEditCode"><div class="field"><label>Code</label><input type="text" id="prCode" required placeholder="SAVE20" style="text-transform:uppercase"></div><div class="row"><div class="field"><label>Type</label><select id="prType"><option value="percent">Percentage %</option><option value="fixed">Fixed EGP</option></select></div><div class="field"><label>Value</label><input type="number" id="prValue" required min="1"></div></div><div class="row"><div class="field"><label>Max Uses</label><input type="number" id="prMax" value="100" min="0"></div><div class="field"><label>Expires</label><input type="date" id="prExp"></div></div><div class="field"><label>Status</label><select id="prStatus"><option value="active">Active</option><option value="disabled">Disabled</option></select></div><div class="actions"><button type="button" class="btn btn-ghost" data-close="modalPromo">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div></form></div>
-<div class="modal" id="modalStaff"><form class="modal-box" id="staffForm"><button type="button" class="modal-close" data-close="modalStaff">×</button><h3 id="staffTitle">Add Member</h3><input type="hidden" id="sEditUid"><div class="field"><label>Firebase UID</label><input type="text" id="sUid" required placeholder="Paste UID from Firebase Auth"></div><div class="field"><label>Email</label><input type="email" id="sEmail" required placeholder="user@example.com"></div><div class="field"><label>Role</label><select id="sRole"><option value="staff">Staff</option><option value="admin">Admin</option><option value="owner">Owner</option></select></div><div class="actions"><button type="button" class="btn btn-ghost" data-close="modalStaff">Cancel</button><button type="submit" class="btn btn-primary">Save</button></div></form></div>
-<div class="modal" id="modalConfirm"><div class="modal-box"><h3 id="confirmTitle">Confirm</h3><p id="confirmMsg" style="margin-bottom:20px;color:var(--muted)">Are you sure?</p><div class="actions"><button class="btn btn-ghost" id="confirmNo">Cancel</button><button class="btn btn-danger" id="confirmYes">Confirm</button></div></div></div>
+<!-- ========== APP ========== -->
+<div id="app">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-brand">
+      <img src="logo.png" alt="" onerror="this.style.display='none'">
+      <span>GAMENEST<small>// ADMIN</small></span>
+    </div>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Menu">
+      <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+    </button>
+  </header>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="side-brand">
+      <img src="logo.png" alt="" onerror="this.style.display='none'">
+      <span>CONTROL</span>
+    </div>
+    <nav class="side-nav">
+      <a href="#" data-page="dashboard" class="active">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" data-page="orders">
+        <svg viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        Orders
+      </a>
+      <a href="#" data-page="products">
+        <svg viewBox="0 0 24 24"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+        Products
+      </a>
+      <a href="#" data-page="customers">
+        <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/></svg>
+        Customers
+      </a>
+      <a href="#" data-page="support">
+        <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Support
+      </a>
+      <a href="#" data-page="reviews">
+        <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        Reviews
+      </a>
+      <a href="#" data-page="website">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+        Website
+      </a>
+      <a href="#" data-page="settings">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Settings
+      </a>
+    </nav>
+    <div class="side-foot">
+      <button id="logoutBtn" type="button">// LOGOUT</button>
+    </div>
+  </aside>
+
+  <div class="scrim" id="scrim"></div>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- DASHBOARD -->
+    <section class="page active" id="page-dashboard">
+      <div class="page-head">
+        <div class="kicker">[ OVERVIEW ]</div>
+        <h2>DASHBOARD</h2>
+        <p>Live snapshot of your store.</p>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="lbl">Total Orders</div><div class="val" id="kpiOrders">—</div></div>
+        <div class="stat"><div class="lbl">Pending</div><div class="val" id="kpiPending">—</div></div>
+        <div class="stat"><div class="lbl">Revenue (EGP)</div><div class="val" id="kpiRevenue">—</div></div>
+        <div class="stat"><div class="lbl">Products</div><div class="val" id="kpiProducts">—</div></div>
+        <div class="stat"><div class="lbl">Support</div><div class="val" id="kpiSupport">—</div></div>
+        <div class="stat"><div class="lbl">Reviews</div><div class="val" id="kpiReviews">—</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h3>// Recent Orders</h3>
+          <button class="btn sm ghost" data-goto="orders" type="button">View all</button>
+        </div>
+        <div class="list" id="recentOrders"><div class="loading">Loading…</div></div>
+      </div>
+    </section>
+
+    <!-- ORDERS -->
+    <section class="page" id="page-orders">
+      <div class="page-head">
+        <div class="kicker">[ ORDERS ]</div>
+        <h2>ORDER_QUEUE</h2>
+        <p>Approve, process, and deliver customer orders.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-head">
+          <h3>// Filter</h3>
+          <select id="orderFilter" style="background:var(--bg);border:1px solid var(--border-2);border-radius:6px;padding:8px 10px">
+            <option value="">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="paid">Paid</option>
+            <option value="processing">Processing</option>
+            <option value="delivered">Delivered</option>
+            <option value="rejected">Rejected</option>
+          </select>
+        </div>
+        <div class="list" id="ordersList"><div class="loading">Loading…</div></div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="page" id="page-products">
+      <div class="page-head">
+        <div class="kicker">[ CATALOG ]</div>
+        <h2>PRODUCTS</h2>
+        <p>Everything shown on gamenest.shop.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>// Add Product</h3></div>
+        <div class="field"><label>Name</label><input id="pName" placeholder="800 V-Bucks"></div>
+        <div class="field"><label>Price (EGP)</label><input id="pPrice" type="number" placeholder="199"></div>
+        <div class="field">
+          <label>Category</label>
+          <select id="pCategory">
+            <option value="vbucks">V-Bucks</option>
+            <option value="crew">Crew</option>
+            <option value="gift">Gift</option>
+          </select>
+        </div>
+        <div class="field"><label>Image URL</label><input id="pImage" placeholder="vbucks.png"></div>
+        <button class="btn" id="addProductBtn" type="button">ADD_PRODUCT</button>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>// Current Products</h3></div>
+        <div class="list" id="productsList"><div class="loading">Loading…</div></div>
+      </div>
+    </section>
+
+    <!-- CUSTOMERS -->
+    <section class="page" id="page-customers">
+      <div class="page-head">
+        <div class="kicker">[ CLIENTS ]</div>
+        <h2>CUSTOMERS</h2>
+        <p>Derived from order history.</p>
+      </div>
+      <div class="panel">
+        <div class="list" id="customersList"><div class="loading">Loading…</div></div>
+      </div>
+    </section>
+
+    <!-- SUPPORT -->
+    <section class="page" id="page-support">
+      <div class="page-head">
+        <div class="kicker">[ TICKETS ]</div>
+        <h2>SUPPORT</h2>
+        <p>Messages from the storefront.</p>
+      </div>
+      <div class="panel">
+        <div class="list" id="supportList"><div class="loading">Loading…</div></div>
+      </div>
+    </section>
+
+    <!-- REVIEWS -->
+    <section class="page" id="page-reviews">
+      <div class="page-head">
+        <div class="kicker">[ FEEDBACK ]</div>
+        <h2>REVIEWS</h2>
+        <p>Ratings submitted on the store.</p>
+      </div>
+      <div class="panel">
+        <div class="list" id="reviewsList"><div class="loading">Loading…</div></div>
+      </div>
+    </section>
+
+    <!-- WEBSITE -->
+    <section class="page" id="page-website">
+      <div class="page-head">
+        <div class="kicker">[ CONTENT ]</div>
+        <h2>WEBSITE</h2>
+        <p>Banner text and maintenance mode.</p>
+      </div>
+      <div class="panel">
+        <div class="field">
+          <label>Banner text (empty = hidden)</label>
+          <input id="wsBanner" placeholder="🎉 New Year sale — 20% off">
+        </div>
+        <div class="field">
+          <label>Maintenance mode</label>
+          <select id="wsMaintenance">
+            <option value="false">Off</option>
+            <option value="true">On</option>
+          </select>
+        </div>
+        <button class="btn" id="saveWebsiteBtn" type="button">SAVE</button>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="page" id="page-settings">
+      <div class="page-head">
+        <div class="kicker">[ SYSTEM ]</div>
+        <h2>SETTINGS</h2>
+        <p>Account and danger zone.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>// Account</h3></div>
+        <p style="color:var(--muted);font-size:13px;margin:0">
+          Signed in as <b id="whoami" style="color:#fff">—</b>
+        </p>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3 style="color:var(--err)">// Danger Zone</h3></div>
+        <p style="color:var(--muted);font-size:13px;margin:0 0 12px">
+          Clears every document in that collection. Cannot be undone.
+        </p>
+        <div class="row-actions">
+          <button class="btn danger sm" data-clear="orders" type="button">CLEAR ORDERS</button>
+          <button class="btn danger sm" data-clear="support" type="button">CLEAR SUPPORT</button>
+          <button class="btn danger sm" data-clear="reviews" type="button">CLEAR REVIEWS</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
 
 <div class="toast" id="toast"></div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import {
-  getFirestore, collection, doc, getDoc, getDocs, addDoc, setDoc, updateDoc, deleteDoc,
-  query, orderBy, limit, onSnapshot, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAHa3wntlgoYqaX3IlNzPzTA5nfxy5WhpM",
@@ -404,1026 +533,338 @@ const firebaseConfig = {
   messagingSenderId: "480446593066",
   appId: "1:480446593066:web:97a76d0cf5a1aeb7c7ab53"
 };
-const app = initializeApp(firebaseConfig);
+
+const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db   = getFirestore(app);
 
-const $ = (s, r=document) => r.querySelector(s);
-const $$ = (s, r=document) => [...r.querySelectorAll(s)];
-const esc = (s) => { const d = document.createElement("div"); d.textContent = s == null ? "" : s; return d.innerHTML; };
+const $   = (s) => document.querySelector(s);
+const $$  = (s) => document.querySelectorAll(s);
 const fmt = (n) => Number(n || 0).toLocaleString("en-US");
-const fmtDate = (ts) => { if (!ts) return "—"; const d = ts.toDate ? ts.toDate() : new Date(ts); return d.toLocaleString("en-GB", {day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}); };
-const fmtTime = (ts) => { if (!ts) return "—"; const d = ts.toDate ? ts.toDate() : new Date(ts); return d.toLocaleTimeString("en-GB", {hour:"2-digit",minute:"2-digit",second:"2-digit"}); };
-const fmtDateShort = (ts) => { if (!ts) return "—"; const d = ts.toDate ? ts.toDate() : new Date(ts); return d.toLocaleDateString("en-GB", {day:"2-digit",month:"short"}); };
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ts  = (v) => v?.toDate ? v.toDate().toLocaleString("en-GB",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}) : "—";
 
-const ROLE_VIEWS = {
-  owner: ["dashboard","orders","products","customers","promotions","support","website","analytics","staff","security","settings","danger"],
-  admin: ["dashboard","orders","products","customers","promotions","support","website","analytics","staff","security"],
-  staff: ["dashboard","orders","products","customers","promotions","support"]
-};
-
-const STATUS_FLOW = {
-  pending:    { next: "paid",       label: "Approve Payment", btn: "success" },
-  paid:       { next: "processing", label: "Start Processing", btn: "info" },
-  processing: { next: "delivered",  label: "Mark Delivered",  btn: "success" }
-};
-
-let currentRole = null, currentUid = null, currentEmail = null;
-let allOrders = [], allProducts = [], allReviews = [], allCustomers = [], allPromos = [], allSupport = [], allStaff = [], allActivity = [];
-let orderFilter = "all", supportFilter = "all", custFilter = "";
-let unsubs = [];
-
-function toast(msg){
-  const el = $("#toast"); el.textContent = msg; el.classList.add("on");
-  clearTimeout(toast._t); toast._t = setTimeout(() => el.classList.remove("on"), 2200);
+let toastTimer;
+function toast(msg, kind=""){
+  const el = $("#toast");
+  el.textContent = msg;
+  el.className = "toast show " + kind;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.className = "toast " + kind, 2400);
 }
 
-function confirmDialog(title, msg){
-  return new Promise(resolve => {
-    $("#confirmTitle").textContent = title;
-    $("#confirmMsg").textContent = msg;
-    $("#modalConfirm").classList.add("on");
-    const close = (val) => { $("#modalConfirm").classList.remove("on"); $("#confirmYes").onclick = null; $("#confirmNo").onclick = null; resolve(val); };
-    $("#confirmYes").onclick = () => close(true);
-    $("#confirmNo").onclick = () => close(false);
-  });
-}
-
-async function logActivity(action, target, details){
+/* ============ AUTH ============ */
+$("#loginBtn").addEventListener("click", async () => {
+  const email = $("#loginEmail").value.trim();
+  const pass  = $("#loginPass").value;
+  if (!email || !pass){ $("#loginErr").textContent = "Enter email and password"; return; }
+  $("#loginBtn").disabled = true;
+  $("#loginErr").textContent = "Authenticating…";
   try {
-    await addDoc(collection(db, "activity"), {
-      action, target: target || "", details: details || "",
-      by: currentEmail, uid: currentUid, role: currentRole,
-      at: serverTimestamp()
-    });
-  } catch(e){ console.warn("Log failed:", e); }
-}
-
-/* ============================================================
-   NOTIFICATIONS
-   ============================================================ */
-function playBeep(){
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    const osc = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.frequency.value = 880; osc.type = "sine";
-    gain.gain.setValueAtTime(0.2, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-    osc.start(); osc.stop(ctx.currentTime + 0.35);
-    setTimeout(() => {
-      const osc2 = ctx.createOscillator();
-      const gain2 = ctx.createGain();
-      osc2.connect(gain2); gain2.connect(ctx.destination);
-      osc2.frequency.value = 1100; osc2.type = "sine";
-      gain2.gain.setValueAtTime(0.2, ctx.currentTime);
-      gain2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
-      osc2.start(); osc2.stop(ctx.currentTime + 0.35);
-    }, 200);
-  } catch(e){}
-}
-
-function notifyNewTicket(t){
-  toast("🔔 New ticket from " + (t.name || "customer"));
-  playBeep();
-  if ("Notification" in window && Notification.permission === "granted"){
-    try {
-      new Notification("GAMENEST · New Support Ticket", {
-        body: (t.name || "Customer") + ": " + (t.message || "").slice(0, 100)
-      });
-    } catch(e){}
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch (e){
+    $("#loginErr").textContent = e.message.replace("Firebase: ", "");
+    $("#loginBtn").disabled = false;
   }
-}
+});
+$("#loginPass").addEventListener("keypress", (e) => { if (e.key === "Enter") $("#loginBtn").click(); });
+$("#logoutBtn").addEventListener("click", () => signOut(auth));
 
-function notifyNewOrder(o){
-  toast("🔔 New order · " + (o.orderId || ""));
-  playBeep();
-  if ("Notification" in window && Notification.permission === "granted"){
-    try {
-      new Notification("GAMENEST · New Order", {
-        body: (o.product || "item") + " · " + (o.price || 0) + " EGP"
-      });
-    } catch(e){}
+onAuthStateChanged(auth, (user) => {
+  if (user){
+    $("#login").classList.add("hidden");
+    $("#app").classList.add("show");
+    $("#whoami").textContent = user.email;
+    loadAll();
+  } else {
+    $("#login").classList.remove("hidden");
+    $("#app").classList.remove("show");
+    $("#loginBtn").disabled = false;
+    $("#loginErr").textContent = "";
+    $("#loginPass").value = "";
   }
-}
+});
 
-const notifBtn = $("#notifBtn");
-if (notifBtn && "Notification" in window){
-  if (Notification.permission === "granted"){ notifBtn.style.display = "none"; }
-  else if (Notification.permission === "denied"){ notifBtn.style.display = "none"; }
-  else {
-    notifBtn.style.display = "";
-    notifBtn.addEventListener("click", async () => {
-      try {
-        const perm = await Notification.requestPermission();
-        if (perm === "granted"){
-          notifBtn.textContent = "🔔 On";
-          notifBtn.disabled = true;
-          toast("Notifications enabled");
-          setTimeout(() => notifBtn.style.display = "none", 1200);
-        } else {
-          notifBtn.style.display = "none";
-          toast("Notifications blocked");
-        }
-      } catch(e){}
-    });
-  }
-}
-
-/* ============================================================
-   AUTH
-   ============================================================ */
-$("#loginForm").addEventListener("submit", async (e) => {
+/* ============ NAV ============ */
+$$(".side-nav a").forEach(a => a.addEventListener("click", (e) => {
   e.preventDefault();
-  const btn = $("#lgBtn");
-  btn.disabled = true; btn.textContent = "Authenticating...";
-  $("#lgMsg").textContent = "";
-  try { await signInWithEmailAndPassword(auth, $("#lgEmail").value.trim(), $("#lgPass").value); }
-  catch (err) { $("#lgMsg").textContent = "Failed: " + (err.code || err.message); btn.disabled = false; btn.textContent = "Authenticate"; }
-});
-
-$("#logoutBtn").addEventListener("click", async () => {
-  unsubs.forEach(u => { try { u(); } catch{} });
-  unsubs = [];
-  await logActivity("logout", "-", "Logged out");
-  await signOut(auth);
-});
-
-onAuthStateChanged(auth, async (user) => {
-  if (!user){
-    currentRole = null; currentUid = null; currentEmail = null;
-    $("#loginWrap").style.display = "flex";
-    $("#app").classList.remove("on");
-    $("#lgBtn").disabled = false; $("#lgBtn").textContent = "Authenticate";
-    $("#lgPass").value = "";
-    return;
-  }
-  try {
-    const staffDoc = await getDoc(doc(db, "staff", user.uid));
-    if (!staffDoc.exists()){
-      $("#lgMsg").textContent = "Access denied. No staff record for this account.";
-      await signOut(auth); return;
-    }
-    currentRole = staffDoc.data().role || "staff";
-    currentUid = user.uid;
-    currentEmail = user.email;
-    if (!ROLE_VIEWS[currentRole]) currentRole = "staff";
-
-    $("#uEmail").textContent = user.email;
-    $("#uRole").innerHTML = `<span class="badge ${currentRole}">${currentRole}</span>`;
-    $("#loginWrap").style.display = "none";
-    $("#app").classList.add("on");
-
-    $$(".nav-section[data-role]").forEach(sec => {
-      const need = sec.dataset.role;
-      const allowed = currentRole === "owner" || (currentRole === "admin" && need === "admin");
-      sec.style.display = allowed ? "" : "none";
-    });
-    $$(".nav-item[data-view]").forEach(item => {
-      item.classList.toggle("hidden", !ROLE_VIEWS[currentRole].includes(item.dataset.view));
-    });
-
-    await logActivity("login", "-", "Logged in from console");
-    attachListeners();
-    showView("dashboard");
-  } catch (err){
-    $("#lgMsg").textContent = "Error: " + err.message;
-    await signOut(auth);
-  }
-});
-
-$$(".nav-item").forEach(item => item.addEventListener("click", () => showView(item.dataset.view)));
-function showView(v){
-  if (!ROLE_VIEWS[currentRole]?.includes(v)) { toast("Access denied"); return; }
-  $$(".nav-item").forEach(i => i.classList.toggle("active", i.dataset.view === v));
-  $$(".view").forEach(s => s.classList.remove("on"));
-  const el = $("#v-" + v); if (el) el.classList.add("on");
-  closeSidebar();
+  goTo(a.dataset.page);
+  $("#sidebar").classList.remove("open");
+  $("#scrim").classList.remove("show");
+}));
+$$("[data-goto]").forEach(b => b.addEventListener("click", () => goTo(b.dataset.goto)));
+function goTo(page){
+  $$(".side-nav a").forEach(a => a.classList.toggle("active", a.dataset.page === page));
+  $$(".page").forEach(p => p.classList.toggle("active", p.id === "page-" + page));
+  window.scrollTo({top:0,behavior:"smooth"});
 }
-function closeSidebar(){ $("#sidebar").classList.remove("open"); $("#sidebarBd").classList.remove("on"); }
-$("#menuBtn").addEventListener("click", () => { $("#sidebar").classList.add("open"); $("#sidebarBd").classList.add("on"); });
-$("#sidebarClose").addEventListener("click", closeSidebar);
-$("#sidebarBd").addEventListener("click", closeSidebar);
+$("#menuBtn").addEventListener("click", () => {
+  $("#sidebar").classList.toggle("open");
+  $("#scrim").classList.toggle("show");
+});
+$("#scrim").addEventListener("click", () => {
+  $("#sidebar").classList.remove("open");
+  $("#scrim").classList.remove("show");
+});
 
-$$("[data-close]").forEach(el => el.addEventListener("click", () => $("#" + el.dataset.close).classList.remove("on")));
-$$(".modal").forEach(m => m.addEventListener("click", (e) => { if (e.target === m) m.classList.remove("on"); }));
+/* ============ DATA ============ */
+let ORDERS = [], PRODUCTS = [], SUPPORT = [], REVIEWS = [];
 
-function attachListeners(){
-  let __firstOrderLoad = true;
-  unsubs.push(onSnapshot(query(collection(db, "orders"), orderBy("createdAt", "desc")), snap => {
-    const prevLen = allOrders.length;
-    const newOrders = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    if (!__firstOrderLoad && newOrders.length > prevLen){
-      const o = newOrders[0];
-      if (o && (o.status || "pending") === "pending") notifyNewOrder(o);
-    }
-    __firstOrderLoad = false;
-    allOrders = newOrders;
-    const pending = allOrders.filter(o => o.status === "pending").length;
-    const nav = $("#navOrders"); nav.textContent = pending; nav.hidden = pending === 0;
-    renderOrders(); renderCustomers(); renderDashboard(); renderAnalytics();
-  }));
+async function loadAll(){
+  await Promise.all([loadOrders(), loadProducts(), loadSupport(), loadReviews()]);
+  renderDashboard();
+  renderCustomers();
+  loadWebsite();
+}
 
-  unsubs.push(onSnapshot(collection(db, "products"), snap => {
-    allProducts = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderProducts(); renderDashboard();
-  }));
-
-  unsubs.push(onSnapshot(query(collection(db, "reviews"), orderBy("createdAt", "desc"), limit(100)), snap => {
-    allReviews = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  }));
-
-  unsubs.push(onSnapshot(collection(db, "promotions"), snap => {
-    allPromos = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    renderPromos();
-  }));
-
-  let __firstSupportLoad = true;
-  unsubs.push(onSnapshot(query(collection(db, "support"), orderBy("createdAt", "desc")), snap => {
-    const prevLen = allSupport.length;
-    const newList = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    if (!__firstSupportLoad && newList.length > prevLen){
-      const t = newList[0];
-      if (t) notifyNewTicket(t);
-    }
-    __firstSupportLoad = false;
-    allSupport = newList;
-    const open = allSupport.filter(s => (s.status || "open") === "open").length;
-    const nv = $("#navSupport"); nv.textContent = open; nv.hidden = open === 0;
-    renderSupport();
-  }));
-
-  if (currentRole === "owner" || currentRole === "admin"){
-    unsubs.push(onSnapshot(collection(db, "staff"), snap => {
-      allStaff = snap.docs.map(d => ({ uid: d.id, ...d.data() }));
-      renderStaff();
-    }));
+async function loadOrders(){
+  $("#ordersList").innerHTML = '<div class="loading">Loading…</div>';
+  try {
+    const snap = await getDocs(collection(db, "orders"));
+    ORDERS = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .sort((a,b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+    renderOrders();
+  } catch(e){
+    $("#ordersList").innerHTML = '<div class="empty">Could not load orders</div>';
   }
+}
 
-  if (currentRole !== "staff"){
-    unsubs.push(onSnapshot(query(collection(db, "activity"), orderBy("at", "desc"), limit(50)), snap => {
-      allActivity = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-      renderActivity();
-    }));
+function renderOrders(){
+  const filter = $("#orderFilter")?.value || "";
+  const list = filter ? ORDERS.filter(o => (o.status || "pending") === filter) : ORDERS;
+  const el = $("#ordersList");
+  if (!list.length){ el.innerHTML = '<div class="empty">No orders</div>'; return; }
+  el.innerHTML = list.map(o => `
+    <div class="row">
+      <div class="row-top">
+        <div>
+          <div class="row-id">${esc(o.orderId || o.id)}</div>
+          <div class="row-meta">${esc(o.product || "—")} · ${ts(o.createdAt)}</div>
+        </div>
+        <div class="row-price">${fmt(o.price)} EGP</div>
+      </div>
+      <div class="row-grid">
+        <div><div class="k">Player</div><div class="v">${esc(o.epicUsername || "—")}</div></div>
+        <div><div class="k">Email</div><div class="v">${esc(o.email || "—")}</div></div>
+        <div><div class="k">Phone</div><div class="v">${esc(o.phone || "—")}</div></div>
+        <div><div class="k">Payment</div><div class="v">${esc(o.paymentMethod || "—")}</div></div>
+        <div><div class="k">Status</div><div class="v"><span class="badge ${esc(o.status || "pending")}">${esc(o.status || "pending")}</span></div></div>
+      </div>
+      <div class="row-actions">
+        ${["pending","paid","processing","delivered","rejected"].map(s =>
+          `<button class="btn sm ${s === o.status ? "" : "ghost"}" data-order="${o.id}" data-status="${s}" type="button">${s}</button>`
+        ).join("")}
+      </div>
+    </div>
+  `).join("");
+  el.querySelectorAll("[data-order]").forEach(b => b.addEventListener("click", async () => {
+    try {
+      await updateDoc(doc(db, "orders", b.dataset.order), { status: b.dataset.status });
+      const o = ORDERS.find(x => x.id === b.dataset.order);
+      if (o) o.status = b.dataset.status;
+      renderOrders(); renderDashboard();
+      toast("Order → " + b.dataset.status, "ok");
+    } catch(e){ toast("Update failed", "err"); }
+  }));
+}
+$("#orderFilter")?.addEventListener("change", renderOrders);
+
+async function loadProducts(){
+  $("#productsList").innerHTML = '<div class="loading">Loading…</div>';
+  try {
+    const snap = await getDocs(collection(db, "products"));
+    PRODUCTS = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderProducts();
+  } catch(e){
+    $("#productsList").innerHTML = '<div class="empty">Could not load products</div>';
   }
+}
+function renderProducts(){
+  const el = $("#productsList");
+  if (!PRODUCTS.length){ el.innerHTML = '<div class="empty">No products yet — add one above</div>'; return; }
+  el.innerHTML = PRODUCTS.map(p => `
+    <div class="row">
+      <div class="row-top">
+        <div>
+          <div class="row-id">${esc(p.name || "—")}</div>
+          <div class="row-meta">${esc(p.category || "—")}</div>
+        </div>
+        <div class="row-price">${fmt(p.price)} EGP</div>
+      </div>
+      <div class="row-actions">
+        <button class="btn danger sm" data-delproduct="${p.id}" type="button">DELETE</button>
+      </div>
+    </div>
+  `).join("");
+  el.querySelectorAll("[data-delproduct]").forEach(b => b.addEventListener("click", async () => {
+    if (!confirm("Delete this product?")) return;
+    try { await deleteDoc(doc(db, "products", b.dataset.delproduct)); toast("Deleted", "ok"); loadProducts(); }
+    catch(e){ toast("Delete failed", "err"); }
+  }));
+}
+$("#addProductBtn").addEventListener("click", async () => {
+  const name = $("#pName").value.trim();
+  const price = Number($("#pPrice").value);
+  const category = $("#pCategory").value;
+  const image = $("#pImage").value.trim();
+  if (!name || !price){ toast("Name and price required", "err"); return; }
+  try {
+    await addDoc(collection(db, "products"), { name, price, category, image, createdAt: serverTimestamp() });
+    $("#pName").value = ""; $("#pPrice").value = ""; $("#pImage").value = "";
+    toast("Product added", "ok");
+    loadProducts();
+  } catch(e){ toast("Add failed", "err"); }
+});
 
-  unsubs.push(onSnapshot(doc(db, "settings", "payment"), snap => {
-    if (snap.exists()){ const d = snap.data();
-      if ($("#setVoda")) $("#setVoda").value = d.vodafone || "";
-      if ($("#setInsta")) $("#setInsta").value = d.instapay || "";
-      if ($("#setTelda")) $("#setTelda").value = d.telda || "";
-      if ($("#setHolder")) $("#setHolder").value = d.holder || "";
-    }
-  }));
-  unsubs.push(onSnapshot(doc(db, "settings", "social"), snap => {
-    if (snap.exists()){ const d = snap.data();
-      if ($("#setIg")) $("#setIg").value = d.instagram || "";
-      if ($("#setDc")) $("#setDc").value = d.discord || "";
-    }
-  }));
-  unsubs.push(onSnapshot(doc(db, "settings", "banner"), snap => {
-    if (snap.exists()){ const d = snap.data();
-      if ($("#bannerText")) $("#bannerText").value = d.text || "";
-      if ($("#bannerLink")) $("#bannerLink").value = d.link || "";
-    }
-  }));
-  unsubs.push(onSnapshot(doc(db, "settings", "maintenance"), snap => {
-    const on = snap.exists() && snap.data().on === true;
-    const badge = $("#maintStatus");
-    if (badge){ badge.textContent = on ? "ON" : "OFF"; badge.className = "badge " + (on ? "rejected" : "success"); }
-  }));
+async function loadSupport(){
+  try {
+    const snap = await getDocs(collection(db, "support"));
+    SUPPORT = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .sort((a,b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+    const el = $("#supportList");
+    if (!SUPPORT.length){ el.innerHTML = '<div class="empty">No tickets</div>'; return; }
+    el.innerHTML = SUPPORT.map(t => `
+      <div class="row">
+        <div class="row-top">
+          <div>
+            <div class="row-id">${esc(t.name || "Anonymous")}</div>
+            <div class="row-meta">${esc(t.email || "—")} · ${ts(t.createdAt)}</div>
+          </div>
+          <span class="badge ${t.status === "closed" ? "closed" : "open"}">${esc(t.status || "open")}</span>
+        </div>
+        ${t.orderId ? `<div class="row-meta">Order: ${esc(t.orderId)}</div>` : ""}
+        <p style="margin:10px 0 0;color:#e8e8e8;font-size:14px;white-space:pre-wrap">${esc(t.message || "")}</p>
+        <div class="row-actions">
+          <button class="btn sm ghost" data-ticket="${t.id}" data-tstatus="${t.status === "closed" ? "open" : "closed"}" type="button">
+            ${t.status === "closed" ? "REOPEN" : "CLOSE"}
+          </button>
+        </div>
+      </div>
+    `).join("");
+    el.querySelectorAll("[data-ticket]").forEach(b => b.addEventListener("click", async () => {
+      try { await updateDoc(doc(db, "support", b.dataset.ticket), { status: b.dataset.tstatus }); toast("Updated", "ok"); loadSupport(); }
+      catch(e){ toast("Failed", "err"); }
+    }));
+  } catch(e){
+    $("#supportList").innerHTML = '<div class="empty">Could not load support</div>';
+  }
+}
+
+async function loadReviews(){
+  try {
+    const snap = await getDocs(collection(db, "reviews"));
+    REVIEWS = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .sort((a,b) => (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0));
+    const el = $("#reviewsList");
+    if (!REVIEWS.length){ el.innerHTML = '<div class="empty">No reviews</div>'; return; }
+    el.innerHTML = REVIEWS.map(r => `
+      <div class="row">
+        <div class="row-top">
+          <div>
+            <div class="row-id">${esc(r.name || "Anonymous")}</div>
+            <div class="row-meta">${ts(r.createdAt)}</div>
+          </div>
+          <div class="row-price" style="color:var(--warn)">${"★".repeat(r.rating || 0)}${"☆".repeat(5 - (r.rating || 0))}</div>
+        </div>
+        ${r.text ? `<p style="margin:8px 0 0;color:#e8e8e8;font-size:14px">${esc(r.text)}</p>` : ""}
+        <div class="row-actions">
+          <button class="btn danger sm" data-delreview="${r.id}" type="button">DELETE</button>
+        </div>
+      </div>
+    `).join("");
+    el.querySelectorAll("[data-delreview]").forEach(b => b.addEventListener("click", async () => {
+      if (!confirm("Delete this review?")) return;
+      try { await deleteDoc(doc(db, "reviews", b.dataset.delreview)); toast("Deleted", "ok"); loadReviews(); }
+      catch(e){ toast("Failed", "err"); }
+    }));
+  } catch(e){
+    $("#reviewsList").innerHTML = '<div class="empty">Could not load reviews</div>';
+  }
 }
 
 function renderDashboard(){
-  const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const todays = allOrders.filter(o => { const d = o.createdAt?.toDate?.(); return d && d >= today; });
-  const pending = allOrders.filter(o => o.status === "pending").length;
-  const paid = allOrders.filter(o => o.status === "paid").length;
-  const processing = allOrders.filter(o => o.status === "processing").length;
-  const delivered = allOrders.filter(o => o.status === "delivered");
-  const revenue = delivered.reduce((s,o) => s + Number(o.price || 0), 0);
-  const customers = new Set(allOrders.map(o => o.email).filter(Boolean)).size;
-
-  $("#statGrid").innerHTML = `
-    <div class="stat"><div class="k">Total Revenue</div><div class="v">${fmt(revenue)} <span class="small dim">EGP</span></div><div class="d">From ${delivered.length} delivered</div></div>
-    <div class="stat"><div class="k">Total Orders</div><div class="v">${allOrders.length}</div><div class="d">All time</div></div>
-    <div class="stat warn"><div class="k">Pending Payment</div><div class="v">${pending}</div><div class="d">Needs approval</div></div>
-    <div class="stat info"><div class="k">Paid / Processing</div><div class="v">${paid + processing}</div><div class="d">${paid} paid · ${processing} processing</div></div>
-    <div class="stat"><div class="k">Today's Orders</div><div class="v">${todays.length}</div><div class="d">${fmtDateShort(now)}</div></div>
-    <div class="stat success"><div class="k">Delivered</div><div class="v">${delivered.length}</div><div class="d">Completed orders</div></div>
-  `;
-  const recent = allActivity.slice(0, 8);
-  $("#recentActivity").innerHTML = recent.length ? recent.map(a => `
-    <div class="act"><div class="t">${fmtDate(a.at)}</div><div class="b"><span class="who">${esc(a.by || "system")}</span> — ${esc(a.action)} ${a.target ? `<span class="dim">→ ${esc(a.target)}</span>` : ""}</div></div>`).join("") : '<div class="dim small mono">No activity yet.</div>';
-  const avgOrder = delivered.length ? Math.round(revenue / delivered.length) : 0;
-  const totalProducts = allProducts.length;
-  const activeProducts = allProducts.filter(p => p.status !== "disabled").length;
-  $("#quickStats").innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div class="row-flex" style="justify-content:space-between"><span class="mono small dim">AVG ORDER VALUE</span><span class="mono">${fmt(avgOrder)} EGP</span></div>
-      <div class="row-flex" style="justify-content:space-between"><span class="mono small dim">CUSTOMERS</span><span class="mono">${customers}</span></div>
-      <div class="row-flex" style="justify-content:space-between"><span class="mono small dim">PRODUCTS</span><span class="mono">${activeProducts} / ${totalProducts} active</span></div>
-      <div class="row-flex" style="justify-content:space-between"><span class="mono small dim">REVIEWS</span><span class="mono">${allReviews.length}</span></div>
-      <div class="row-flex" style="justify-content:space-between"><span class="mono small dim">ACTIVE PROMOS</span><span class="mono">${allPromos.filter(p => p.status !== "disabled").length}</span></div>
-      <div class="row-flex" style="justify-content:space-between"><span class="mono small dim">OPEN TICKETS</span><span class="mono">${allSupport.filter(s => (s.status || "open") === "open").length}</span></div>
-    </div>`;
-}
-$("#refreshDash")?.addEventListener("click", renderDashboard);
-
-$$("#orderFilters .chip").forEach(c => {
-  c.addEventListener("click", () => {
-    $$("#orderFilters .chip").forEach(x => x.classList.remove("on"));
-    c.classList.add("on"); orderFilter = c.dataset.f; renderOrders();
-  });
-});
-
-function renderOrders(){
-  const filtered = orderFilter === "all" ? allOrders : allOrders.filter(o => (o.status || "pending") === orderFilter);
-  $("#ordersSub").textContent = `${filtered.length} order${filtered.length === 1 ? "" : "s"} shown`;
-  const w = $("#ordersWrap");
-  if (!filtered.length){ w.innerHTML = '<div class="empty">No orders match.</div>'; return; }
-
-  w.innerHTML = `<div class="tbl-wrap"><table>
-    <thead><tr>
-      <th>Order</th><th>Date</th><th>Customer</th><th>Product</th><th>Price</th><th>Status</th><th>Actions</th>
-    </tr></thead>
-    <tbody>${filtered.map(o => {
-      const flow = STATUS_FLOW[o.status];
-      return `
-      <tr>
-        <td class="mono">${esc(o.orderId || o.id.slice(-6))}</td>
-        <td class="mono small">${fmtDate(o.createdAt)}</td>
-        <td><div>${esc(o.name || "—")}</div><div class="mono small dim">${esc(o.email || "")}</div></td>
-        <td class="small">${esc(o.product || "—")}</td>
-        <td class="mono">${fmt(o.price)}</td>
-        <td><span class="badge ${o.status || "pending"}">${o.status || "pending"}</span></td>
-        <td>
-          <div class="row-flex" style="gap:6px">
-            <button class="btn btn-ghost btn-sm" data-view-order="${o.id}">View</button>
-            ${flow ? `<button class="btn btn-${flow.btn} btn-sm" data-order-advance="${o.id}">${flow.label}</button>` : ""}
-            ${o.status === "pending" && currentRole !== "staff" ? `<button class="btn btn-danger btn-sm" data-order-act="rejected" data-id="${o.id}">Reject</button>` : ""}
-          </div>
-        </td>
-      </tr>`;
-    }).join("")}
-    </tbody></table></div>`;
-
-  w.querySelectorAll("[data-view-order]").forEach(b => b.addEventListener("click", () => openOrderModal(b.dataset.viewOrder)));
-  w.querySelectorAll("[data-order-advance]").forEach(b => b.addEventListener("click", () => advanceOrder(b.dataset.orderAdvance)));
-  w.querySelectorAll("[data-order-act]").forEach(b => b.addEventListener("click", async () => {
-    const act = b.dataset.orderAct;
-    const ok = await confirmDialog("Confirm", `Mark this order as ${act}?`);
-    if (!ok) return;
-    try {
-      await updateDoc(doc(db, "orders", b.dataset.id), { status: act, updatedAt: serverTimestamp(), updatedBy: currentEmail });
-      await logActivity("order_status", b.dataset.id.slice(-6), "→ " + act);
-      toast("Order " + act);
-    } catch(e){ toast("Error: " + e.message); }
-  }));
-}
-
-async function advanceOrder(id){
-  const o = allOrders.find(x => x.id === id);
-  if (!o) return;
-  const flow = STATUS_FLOW[o.status];
-  if (!flow) { toast("No next step"); return; }
-  const ok = await confirmDialog("Advance Order", `Move to "${flow.next}"?`);
-  if (!ok) return;
-  try {
-    await updateDoc(doc(db, "orders", id), {
-      status: flow.next,
-      updatedAt: serverTimestamp(),
-      updatedBy: currentEmail
-    });
-    await logActivity("order_advance", o.orderId || id.slice(-6), `${o.status} → ${flow.next}`);
-    toast("Moved to " + flow.next);
-  } catch(e){ toast("Error: " + e.message); }
-}
-
-function openOrderModal(id){
-  const o = allOrders.find(x => x.id === id); if (!o) return;
-  $("#orderModalTitle").textContent = "Order " + (o.orderId || o.id.slice(-6));
-
-  const flow = STATUS_FLOW[o.status];
-  const hasProof = o.proofName && o.proofName.length > 0;
-
-  $("#orderModalBody").innerHTML = `
-    <div class="od-grid">
-      <div class="od-cell"><div class="k">STATUS</div><div class="v"><span class="badge ${o.status || "pending"}">${o.status || "pending"}</span></div></div>
-      <div class="od-cell"><div class="k">DATE</div><div class="v">${fmtDate(o.createdAt)}</div></div>
-      <div class="od-cell"><div class="k">CUSTOMER</div><div class="v">${esc(o.name || "—")}</div></div>
-      <div class="od-cell"><div class="k">EMAIL</div><div class="v">${esc(o.email || "—")}</div></div>
-      <div class="od-cell"><div class="k">PHONE</div><div class="v">${esc((o.country||"") + " " + (o.phone||"—"))}</div></div>
-      <div class="od-cell"><div class="k">PRODUCT</div><div class="v">${esc(o.product || "—")}</div></div>
-      <div class="od-cell"><div class="k">PRICE</div><div class="v">${fmt(o.price)} EGP</div></div>
-      <div class="od-cell"><div class="k">DISCOUNT</div><div class="v">${o.discount ? o.discount + "%" : "none"}</div></div>
-      <div class="od-cell"><div class="k">PAYMENT</div><div class="v">${esc(o.payment || "—")}</div></div>
-      <div class="od-cell"><div class="k">PROOF FILE</div><div class="v">${esc(o.proofName || "—")}</div></div>
-      ${o.updatedBy ? `<div class="od-cell"><div class="k">LAST UPDATED BY</div><div class="v">${esc(o.updatedBy)}</div></div>` : ""}
-    </div>
-
-    ${hasProof ? `<button class="btn btn-info btn-sm" id="viewProofBtn" style="margin-bottom:14px">📸 View Payment Proof</button>` : ""}
-
-    <div style="display:flex;gap:8px;flex-wrap:wrap;padding-top:14px;border-top:1px solid var(--border)">
-      ${flow ? `<button class="btn btn-${flow.btn} btn-sm" id="modalAdvance">${flow.label}</button>` : ""}
-      ${o.status === "pending" && currentRole !== "staff" ? `<button class="btn btn-danger btn-sm" id="modalReject">Reject Order</button>` : ""}
-      ${o.status !== "refunded" && currentRole !== "staff" ? `<button class="btn btn-warn btn-sm" id="modalRefund">Refund</button>` : ""}
-    </div>
-
-    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
-      <label class="mono small dim" style="display:block;margin-bottom:6px">ADMIN NOTE</label>
-      <textarea id="orderNote" style="width:100%;background:transparent;border:1px solid var(--border-2);color:var(--text);padding:10px;font-size:12px" rows="2">${esc(o.note || "")}</textarea>
-      <button class="btn btn-primary btn-sm" id="saveNote" style="margin-top:8px">Save Note</button>
-    </div>
-
-    <div style="margin-top:20px;padding-top:14px;border-top:1px solid var(--border)">
-      <div class="mono small dim" style="margin-bottom:10px">// ORDER_TIMELINE</div>
-      <div class="timeline" id="orderTimeline">Loading…</div>
-    </div>
-  `;
-
-  $("#modalOrder").classList.add("on");
-
-  if ($("#viewProofBtn")) {
-    $("#viewProofBtn").addEventListener("click", () => openProof(o));
-  }
-  if ($("#modalAdvance")) {
-    $("#modalAdvance").addEventListener("click", async () => { await advanceOrder(id); openOrderModal(id); });
-  }
-  if ($("#modalReject")) {
-    $("#modalReject").addEventListener("click", async () => {
-      if (!await confirmDialog("Reject Order", "Mark this order as rejected?")) return;
-      try {
-        await updateDoc(doc(db, "orders", id), { status: "rejected", updatedAt: serverTimestamp(), updatedBy: currentEmail });
-        await logActivity("order_reject", o.orderId || id.slice(-6), "Rejected");
-        toast("Rejected"); openOrderModal(id);
-      } catch(e){ toast("Error: " + e.message); }
-    });
-  }
-  if ($("#modalRefund")) {
-    $("#modalRefund").addEventListener("click", async () => {
-      if (!await confirmDialog("Refund Order", "Mark this order as refunded?")) return;
-      try {
-        await updateDoc(doc(db, "orders", id), { status: "refunded", updatedAt: serverTimestamp(), updatedBy: currentEmail });
-        await logActivity("order_refund", o.orderId || id.slice(-6), "Refunded");
-        toast("Refunded"); openOrderModal(id);
-      } catch(e){ toast("Error: " + e.message); }
-    });
-  }
-  if ($("#saveNote")) {
-    $("#saveNote").addEventListener("click", async () => {
-      try {
-        await updateDoc(doc(db, "orders", id), { note: $("#orderNote").value });
-        toast("Note saved"); await logActivity("order_note", id.slice(-6), "Note added");
-      } catch(e){ toast("Error: " + e.message); }
-    });
-  }
-
-  loadOrderTimeline(o);
-}
-
-async function loadOrderTimeline(o){
-  const tl = $("#orderTimeline");
-  if (!tl) return;
-  try {
-    const q = query(collection(db, "activity"), orderBy("at", "desc"), limit(50));
-    const snap = await getDocs(q);
-    const related = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(a => {
-      const target = (a.target || "").toLowerCase();
-      const oid = (o.orderId || o.id).toLowerCase();
-      return target && (oid.includes(target) || target.includes(oid.slice(-6)));
-    });
-    const items = [
-      { time: o.createdAt, text: "Order created", who: o.name || "", cls: "done" }
-    ];
-    related.reverse().forEach(a => {
-      items.push({
-        time: a.at,
-        text: a.action + (a.details ? " — " + a.details : ""),
-        who: a.by || "",
-        cls: (a.action.includes("reject") || a.action.includes("refund")) ? "fail" : ""
-      });
-    });
-    if (o.status === "delivered") items.push({ time: o.updatedAt || o.createdAt, text: "Order delivered", who: o.updatedBy || "", cls: "done" });
-
-    tl.innerHTML = items.map(it => `
-      <div class="tl-item ${it.cls}">
-        <div class="tl-time">${fmtTime(it.time)} · ${fmtDate(it.time)}</div>
-        <div class="tl-text">${esc(it.text)}</div>
-        ${it.who ? `<div class="tl-who">${esc(it.who)}</div>` : ""}
+  $("#kpiOrders").textContent   = ORDERS.length;
+  $("#kpiPending").textContent  = ORDERS.filter(o => (o.status || "pending") === "pending").length;
+  $("#kpiRevenue").textContent  = fmt(ORDERS.filter(o => ["paid","processing","delivered"].includes(o.status)).reduce((s,o) => s + Number(o.price || 0), 0));
+  $("#kpiProducts").textContent = PRODUCTS.length;
+  $("#kpiSupport").textContent  = SUPPORT.length;
+  $("#kpiReviews").textContent  = REVIEWS.length;
+  const recent = ORDERS.slice(0,5);
+  const el = $("#recentOrders");
+  if (!recent.length){ el.innerHTML = '<div class="empty">No orders yet</div>'; return; }
+  el.innerHTML = recent.map(o => `
+    <div class="row">
+      <div class="row-top">
+        <div>
+          <div class="row-id">${esc(o.orderId || o.id)}</div>
+          <div class="row-meta">${esc(o.product || "—")} · ${ts(o.createdAt)}</div>
+        </div>
+        <div class="row-price">${fmt(o.price)} EGP</div>
       </div>
-    `).join("");
-  } catch(e){
-    tl.innerHTML = '<div class="dim small mono">Timeline unavailable.</div>';
-  }
+      <div style="margin-top:8px"><span class="badge ${esc(o.status || "pending")}">${esc(o.status || "pending")}</span></div>
+    </div>
+  `).join("");
 }
-
-function openProof(o){
-  $("#proofTitle").textContent = "Proof · " + (o.orderId || o.id.slice(-6));
-  const hasImage = o.proofData && o.proofData.startsWith("data:image");
-  $("#proofBody").innerHTML = `
-    <div class="od-grid">
-      <div class="od-cell"><div class="k">CUSTOMER</div><div class="v">${esc(o.name || "—")}</div></div>
-      <div class="od-cell"><div class="k">PRODUCT</div><div class="v">${esc(o.product || "—")}</div></div>
-      <div class="od-cell"><div class="k">AMOUNT</div><div class="v">${fmt(o.price)} EGP</div></div>
-      <div class="od-cell"><div class="k">METHOD</div><div class="v">${esc(o.payment || "—")}</div></div>
-    </div>
-    <div class="proof-view">
-      ${hasImage
-        ? `<img src="${esc(o.proofData)}" alt="proof">`
-        : `<div class="dim small mono" style="padding:30px">[ Image not stored — only filename saved ]</div>`}
-      <div class="filename">${esc(o.proofName || "no filename")}</div>
-    </div>
-    <div class="dim small mono" style="margin-top:14px;line-height:1.7">
-      ⚠ Older orders don't have the image stored. New orders (placed after the recent update) will show the image here.
-    </div>
-  `;
-  $("#modalProof").classList.add("on");
-}
-
-$("#exportOrders")?.addEventListener("click", () => {
-  if (!allOrders.length) { toast("No orders"); return; }
-  const rows = [["OrderID","Date","Name","Email","Phone","Product","Price","Status","Payment"]];
-  allOrders.forEach(o => rows.push([o.orderId || o.id, fmtDate(o.createdAt), o.name||"", o.email||"", (o.country||"")+" "+(o.phone||""), o.product||"", o.price||"", o.status||"pending", o.payment||""]));
-  const csv = rows.map(r => r.map(x => '"'+String(x).replace(/"/g,'""')+'"').join(",")).join("\n");
-  const blob = new Blob([csv], { type: "text/csv" });
-  const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "orders.csv"; a.click();
-});
 
 function renderCustomers(){
   const map = new Map();
-  allOrders.forEach(o => {
-    const key = o.email || o.phone || o.id;
+  ORDERS.forEach(o => {
+    const key = (o.email || "").toLowerCase();
     if (!key) return;
-    if (!map.has(key)) map.set(key, { email: o.email, name: o.name, phone: o.phone, country: o.country, orders: [], total: 0, last: o.createdAt });
+    if (!map.has(key)) map.set(key, { email: o.email, name: o.name || o.epicUsername || "—", count: 0, total: 0 });
     const c = map.get(key);
-    c.orders.push(o);
-    if (o.status === "delivered") c.total += Number(o.price || 0);
-    const d = o.createdAt?.toDate?.(); if (d && (!c.last || d > c.last.toDate?.())) c.last = o.createdAt;
+    c.count += 1;
+    c.total += Number(o.price || 0);
   });
-  allCustomers = [...map.values()];
-  const q = custFilter.toLowerCase();
-  const filtered = q ? allCustomers.filter(c =>
-    (c.name||"").toLowerCase().includes(q) || (c.email||"").toLowerCase().includes(q) || (c.phone||"").includes(q)
-  ) : allCustomers;
-
-  $("#customersSub").textContent = `${filtered.length} customer${filtered.length===1?"":"s"}`;
-  const w = $("#customersWrap");
-  if (!filtered.length){ w.innerHTML = '<div class="empty">No customers yet.</div>'; return; }
-  w.innerHTML = `<div class="tbl-wrap"><table>
-    <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Orders</th><th>Total Spent</th><th>Last Order</th></tr></thead>
-    <tbody>${filtered.map(c => `
-      <tr>
-        <td>${esc(c.name || "—")}</td>
-        <td class="mono small">${esc(c.email || "—")}</td>
-        <td class="mono small">${esc((c.country||"") + " " + (c.phone||""))}</td>
-        <td class="mono">${c.orders.length}</td>
-        <td class="mono">${fmt(c.total)} EGP</td>
-        <td class="mono small">${fmtDate(c.last)}</td>
-      </tr>`).join("")}
-    </tbody></table></div>`;
-}
-$("#custSearch")?.addEventListener("input", (e) => { custFilter = e.target.value; renderCustomers(); });
-
-function renderProducts(){
-  $("#productsSub").textContent = `${allProducts.length} product${allProducts.length===1?"":"s"}`;
-  const w = $("#productsWrap");
-  if (!allProducts.length){
-    w.innerHTML = `
-      <div class="empty" style="margin-bottom:16px">No products in Firestore yet — click "+ New Product" to add one.</div>
-      <div class="panel">
-        <div class="panel-title">// How to add products</div>
-        <p class="muted small" style="line-height:1.8">
-          1. Click <b>+ New Product</b> above<br>
-          2. Fill in the details (ID is a short slug like <code>vb-1000</code>)<br>
-          3. Save — it will appear on the store immediately<br>
-          <br>
-          The store loads products from Firestore. Whatever you add here = live on the site.
-        </p>
-      </div>`;
-    return;
-  }
-  w.innerHTML = `<div class="tbl-wrap"><table>
-    <thead><tr><th>Image</th><th>Product</th><th>Kind</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
-    <tbody>${allProducts.map(p => `
-      <tr>
-        <td><img src="${esc(p.img || "")}" style="width:36px;height:36px;object-fit:contain" onerror="this.style.display='none'"></td>
-        <td><div>${esc(p.product || "—")}</div><div class="mono small dim">${esc(p.id)}</div></td>
-        <td class="mono small">${esc(p.kind || "—")}</td>
-        <td class="mono">${fmt(p.price)} EGP</td>
-        <td class="mono">${p.stock ?? "∞"}</td>
-        <td><span class="badge ${p.status === "disabled" ? "rejected" : "success"}">${p.status || "active"}</span></td>
-        <td>
-          <div class="row-flex" style="gap:6px">
-            <button class="btn btn-ghost btn-sm" data-edit-p="${p.id}">Edit</button>
-            ${currentRole !== "staff" ? `<button class="btn btn-danger btn-sm" data-del-p="${p.id}">Delete</button>` : ""}
-          </div>
-        </td>
-      </tr>`).join("")}
-    </tbody></table></div>`;
-  w.querySelectorAll("[data-edit-p]").forEach(b => b.addEventListener("click", () => openProductForm(allProducts.find(p => p.id === b.dataset.editP))));
-  w.querySelectorAll("[data-del-p]").forEach(b => b.addEventListener("click", async () => {
-    if (!await confirmDialog("Delete Product", "This cannot be undone. Delete?")) return;
-    try { await deleteDoc(doc(db, "products", b.dataset.delP)); await logActivity("product_delete", b.dataset.delP, "Deleted"); toast("Deleted"); }
-    catch(e){ toast("Error: " + e.message); }
-  }));
-}
-
-$("#addProduct")?.addEventListener("click", () => openProductForm(null));
-$("#syncProducts")?.addEventListener("click", () => { renderProducts(); toast("Refreshed from Firestore"); });
-
-function openProductForm(p){
-  $("#prodTitle").textContent = p ? "Edit Product" : "New Product";
-  $("#pEditId").value = p ? p.id : "";
-  $("#pSlug").value = p ? p.id : ""; $("#pSlug").disabled = !!p;
-  $("#pName").value = p ? (p.product || "") : "";
-  $("#pPrice").value = p ? (p.price || "") : "";
-  $("#pKind").value = p ? (p.kind || "vb") : "vb";
-  $("#pImg").value = p ? (p.img || "") : "";
-  $("#pStock").value = p ? (p.stock ?? 999) : 999;
-  $("#pStatus").value = p ? (p.status || "active") : "active";
-  $("#modalProduct").classList.add("on");
-}
-
-$("#productForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const id = $("#pEditId").value || $("#pSlug").value.trim().toLowerCase().replace(/[^a-z0-9-]/g, "-");
-  if (!id){ toast("Invalid ID"); return; }
-  try {
-    await setDoc(doc(db, "products", id), {
-      product: $("#pName").value.trim(),
-      price: Number($("#pPrice").value),
-      kind: $("#pKind").value,
-      img: $("#pImg").value.trim(),
-      stock: Number($("#pStock").value),
-      status: $("#pStatus").value,
-      updatedAt: serverTimestamp()
-    }, { merge: true });
-    await logActivity("product_save", id, "Saved · " + $("#pPrice").value + " EGP");
-    $("#modalProduct").classList.remove("on");
-    toast("Saved — live on store");
-  } catch(e){ toast("Error: " + e.message); }
-});
-
-function renderPromos(){
-  $("#promosSub").textContent = `${allPromos.length} promo${allPromos.length===1?"":"s"}`;
-  const w = $("#promosWrap");
-  if (!allPromos.length){ w.innerHTML = '<div class="empty">No promo codes yet.</div>'; return; }
-  w.innerHTML = `<div class="tbl-wrap"><table>
-    <thead><tr><th>Code</th><th>Type</th><th>Value</th><th>Uses</th><th>Expires</th><th>Status</th><th>Actions</th></tr></thead>
-    <tbody>${allPromos.map(p => `
-      <tr>
-        <td class="mono" style="font-weight:800;color:var(--accent)">${esc(p.code || p.id)}</td>
-        <td class="mono small">${esc(p.type || "percent")}</td>
-        <td class="mono">${p.type === "percent" ? p.value + "%" : fmt(p.value) + " EGP"}</td>
-        <td class="mono">${p.uses || 0} / ${p.maxUses ?? "∞"}</td>
-        <td class="mono small">${p.expires || "—"}</td>
-        <td><span class="badge ${p.status === "disabled" ? "rejected" : "success"}">${p.status || "active"}</span></td>
-        <td>
-          <div class="row-flex" style="gap:6px">
-            <button class="btn btn-ghost btn-sm" data-edit-pr="${p.id}">Edit</button>
-            ${currentRole !== "staff" ? `<button class="btn btn-danger btn-sm" data-del-pr="${p.id}">Delete</button>` : ""}
-          </div>
-        </td>
-      </tr>`).join("")}
-    </tbody></table></div>`;
-  w.querySelectorAll("[data-edit-pr]").forEach(b => b.addEventListener("click", () => openPromoForm(allPromos.find(p => p.id === b.dataset.editPr))));
-  w.querySelectorAll("[data-del-pr]").forEach(b => b.addEventListener("click", async () => {
-    if (!await confirmDialog("Delete Promo", "Delete this promo code?")) return;
-    try { await deleteDoc(doc(db, "promotions", b.dataset.delPr)); await logActivity("promo_delete", b.dataset.delPr, "Deleted"); toast("Deleted"); }
-    catch(e){ toast("Error: " + e.message); }
-  }));
-}
-
-$("#addPromo")?.addEventListener("click", () => openPromoForm(null));
-function openPromoForm(p){
-  $("#promoTitle").textContent = p ? "Edit Promo" : "New Promo";
-  $("#prEditCode").value = p ? p.id : "";
-  $("#prCode").value = p ? (p.code || p.id) : ""; $("#prCode").disabled = !!p;
-  $("#prType").value = p ? (p.type || "percent") : "percent";
-  $("#prValue").value = p ? (p.value || "") : "";
-  $("#prMax").value = p ? (p.maxUses ?? 100) : 100;
-  $("#prExp").value = p ? (p.expires || "") : "";
-  $("#prStatus").value = p ? (p.status || "active") : "active";
-  $("#modalPromo").classList.add("on");
-}
-
-$("#promoForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const code = ($("#prEditCode").value || $("#prCode").value.trim().toUpperCase());
-  if (!code){ toast("Invalid code"); return; }
-  try {
-    await setDoc(doc(db, "promotions", code), {
-      code,
-      type: $("#prType").value,
-      value: Number($("#prValue").value),
-      maxUses: Number($("#prMax").value),
-      expires: $("#prExp").value || "",
-      status: $("#prStatus").value,
-      updatedAt: serverTimestamp()
-    }, { merge: true });
-    await logActivity("promo_save", code, "Saved");
-    $("#modalPromo").classList.remove("on");
-    toast("Saved");
-  } catch(e){ toast("Error: " + e.message); }
-});
-
-$$("#supportFilters .chip").forEach(c => {
-  c.addEventListener("click", () => {
-    $$("#supportFilters .chip").forEach(x => x.classList.remove("on"));
-    c.classList.add("on"); supportFilter = c.dataset.f; renderSupport();
-  });
-});
-
-function renderSupport(){
-  const filtered = supportFilter === "all" ? allSupport : allSupport.filter(s => (s.status || "open") === supportFilter);
-  $("#supportSub").textContent = `${filtered.length} ticket${filtered.length===1?"":"s"}`;
-  const w = $("#supportWrap");
-  if (!filtered.length){ w.innerHTML = '<div class="empty">No support tickets.</div>'; return; }
-  w.innerHTML = `<div class="tbl-wrap"><table>
-    <thead><tr><th>Date</th><th>From</th><th>Message</th><th>Status</th><th>Actions</th></tr></thead>
-    <tbody>${filtered.map(s => `
-      <tr>
-        <td class="mono small">${fmtDate(s.createdAt)}</td>
-        <td><div>${esc(s.name || "—")}</div><div class="mono small dim">${esc(s.email || "")}</div></td>
-        <td class="small">${esc((s.message || "").slice(0, 90))}${s.message && s.message.length > 90 ? "..." : ""}</td>
-        <td><span class="badge ${s.status === "closed" ? "success" : s.status === "replied" ? "admin" : "pending"}">${s.status || "open"}</span></td>
-        <td>
-          <div class="row-flex" style="gap:6px">
-            <button class="btn btn-ghost btn-sm" data-view-t="${s.id}">View</button>
-            ${currentRole !== "staff" ? `<button class="btn btn-danger btn-sm" data-del-t="${s.id}">✕</button>` : ""}
-          </div>
-        </td>
-      </tr>`).join("")}
-    </tbody></table></div>`;
-  w.querySelectorAll("[data-view-t]").forEach(b => b.addEventListener("click", () => openTicket(b.dataset.viewT)));
-  w.querySelectorAll("[data-del-t]").forEach(b => b.addEventListener("click", async () => {
-    if (!await confirmDialog("Delete Ticket", "Delete this ticket?")) return;
-    try { await deleteDoc(doc(db, "support", b.dataset.delT)); toast("Deleted"); }
-    catch(e){ toast("Error: " + e.message); }
-  }));
-}
-
-function openTicket(id){
-  const t = allSupport.find(s => s.id === id); if (!t) return;
-  $("#orderModalTitle").textContent = "Support Ticket";
-  $("#orderModalBody").innerHTML = `
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <div><span class="mono small dim">FROM</span><div>${esc(t.name || "—")} · ${esc(t.email || "")}</div></div>
-      <div><span class="mono small dim">DATE</span><div class="mono small">${fmtDate(t.createdAt)}</div></div>
-      <div><span class="mono small dim">MESSAGE</span><div style="background:var(--panel);border:1px solid var(--border);padding:12px;margin-top:6px;font-size:13px">${esc(t.message || "")}</div></div>
-      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
-        <label class="mono small dim" style="display:block;margin-bottom:6px">REPLY</label>
-        <textarea id="ticketReply" style="width:100%;background:transparent;border:1px solid var(--border-2);color:var(--text);padding:10px;font-size:12px" rows="3">${esc(t.reply || "")}</textarea>
-        <div class="row-flex" style="margin-top:8px">
-          <button class="btn btn-primary btn-sm" id="saveReply">Save Reply</button>
-          <button class="btn btn-success btn-sm" id="closeTicket">Mark Closed</button>
+  const list = Array.from(map.values()).sort((a,b) => b.total - a.total);
+  const el = $("#customersList");
+  if (!list.length){ el.innerHTML = '<div class="empty">No customers yet</div>'; return; }
+  el.innerHTML = list.map(c => `
+    <div class="row">
+      <div class="row-top">
+        <div>
+          <div class="row-id">${esc(c.name)}</div>
+          <div class="row-meta">${esc(c.email)}</div>
         </div>
+        <div class="row-price">${fmt(c.total)} EGP</div>
       </div>
-    </div>`;
-  $("#modalOrder").classList.add("on");
-  $("#saveReply").addEventListener("click", async () => {
-    try { await updateDoc(doc(db, "support", id), { reply: $("#ticketReply").value, status: "replied", repliedAt: serverTimestamp(), repliedBy: currentEmail }); toast("Reply saved"); await logActivity("ticket_reply", id.slice(-6), "Replied"); }
-    catch(e){ toast("Error: " + e.message); }
-  });
-  $("#closeTicket").addEventListener("click", async () => {
-    try { await updateDoc(doc(db, "support", id), { status: "closed" }); toast("Closed"); $("#modalOrder").classList.remove("on"); }
-    catch(e){ toast("Error: " + e.message); }
-  });
+      <div class="row-meta" style="margin-top:8px">${c.count} order${c.count === 1 ? "" : "s"}</div>
+    </div>
+  `).join("");
 }
 
-function renderStaff(){
-  const w = $("#staffWrap");
-  if (!allStaff.length){ w.innerHTML = '<div class="empty">No staff members.</div>'; return; }
-  w.innerHTML = `<div class="tbl-wrap"><table>
-    <thead><tr><th>Email</th><th>UID</th><th>Role</th><th>Actions</th></tr></thead>
-    <tbody>${allStaff.map(s => `
-      <tr>
-        <td class="mono small">${esc(s.email || "—")}</td>
-        <td class="mono small dim">${esc(s.uid || "")}</td>
-        <td><span class="badge ${s.role || "staff"}">${s.role || "staff"}</span></td>
-        <td>
-          <div class="row-flex" style="gap:6px">
-            <button class="btn btn-ghost btn-sm" data-edit-s="${s.uid}">Edit</button>
-            ${currentRole === "owner" && s.uid !== currentUid ? `<button class="btn btn-danger btn-sm" data-del-s="${s.uid}">Remove</button>` : ""}
-          </div>
-        </td>
-      </tr>`).join("")}
-    </tbody></table></div>`;
-  w.querySelectorAll("[data-edit-s]").forEach(b => b.addEventListener("click", () => openStaffForm(allStaff.find(s => s.uid === b.dataset.editS))));
-  w.querySelectorAll("[data-del-s]").forEach(b => b.addEventListener("click", async () => {
-    if (!await confirmDialog("Remove Member", "Remove this person's access?")) return;
-    try { await deleteDoc(doc(db, "staff", b.dataset.delS)); await logActivity("staff_remove", b.dataset.delS, "Removed"); toast("Removed"); }
-    catch(e){ toast("Error: " + e.message); }
-  }));
-}
-
-$("#addStaff")?.addEventListener("click", () => openStaffForm(null));
-function openStaffForm(s){
-  $("#staffTitle").textContent = s ? "Edit Member" : "Add Member";
-  $("#sEditUid").value = s ? s.uid : "";
-  $("#sUid").value = s ? s.uid : ""; $("#sUid").disabled = !!s;
-  $("#sEmail").value = s ? (s.email || "") : "";
-  $("#sRole").value = s ? (s.role || "staff") : "staff";
-  $("#modalStaff").classList.add("on");
-}
-
-$("#staffForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  if (currentRole !== "owner" && $("#sRole").value === "owner"){ toast("Only owner can create owners"); return; }
-  const uid = $("#sEditUid").value || $("#sUid").value.trim();
-  if (!uid){ toast("UID required"); return; }
+async function loadWebsite(){
   try {
-    await setDoc(doc(db, "staff", uid), {
-      email: $("#sEmail").value.trim(),
-      role: $("#sRole").value,
-      updatedAt: serverTimestamp()
+    const snap = await getDoc(doc(db, "settings", "website"));
+    if (!snap.exists()) return;
+    const d = snap.data();
+    $("#wsBanner").value = d.bannerText || "";
+    $("#wsMaintenance").value = d.maintenance ? "true" : "false";
+  } catch(e){}
+}
+
+$("#saveWebsiteBtn").addEventListener("click", async () => {
+  try {
+    await setDoc(doc(db, "settings", "website"), {
+      bannerText: $("#wsBanner").value.trim(),
+      maintenance: $("#wsMaintenance").value === "true"
     }, { merge: true });
-    await logActivity("staff_save", uid, "Saved role: " + $("#sRole").value);
-    $("#modalStaff").classList.remove("on");
-    toast("Saved");
-  } catch(e){ toast("Error: " + e.message); }
+    toast("Saved", "ok");
+  } catch(e){ toast("Save failed", "err"); }
 });
 
-function renderActivity(){
-  const w = $("#activityLogs");
-  if (!allActivity.length){ w.innerHTML = '<div class="dim small mono">No activity yet.</div>'; return; }
-  w.innerHTML = `<div class="activity">${allActivity.map(a => `
-    <div class="act">
-      <div class="t">${fmtDate(a.at)}</div>
-      <div class="b"><span class="who">${esc(a.by || "system")}</span> — <span class="mono small">${esc(a.action)}</span> ${a.target ? `<span class="dim">→ ${esc(a.target)}</span>` : ""}${a.details ? `<div class="dim small" style="margin-top:3px">${esc(a.details)}</div>` : ""}</div>
-    </div>`).join("")}</div>`;
-  const lh = $("#loginHistory");
-  const logins = allActivity.filter(a => a.action === "login" || a.action === "logout").slice(0, 15);
-  lh.innerHTML = logins.length ? `<div class="activity">${logins.map(a => `
-    <div class="act"><div class="t">${fmtDate(a.at)}</div><div class="b"><span class="who">${esc(a.by || "")}</span> — ${esc(a.action)}</div></div>
-  `).join("")}</div>` : '<div class="dim small mono">No logins recorded.</div>';
-}
-
-function renderAnalytics(){
-  const delivered = allOrders.filter(o => o.status === "delivered");
-  const rejected = allOrders.filter(o => o.status === "rejected");
-  const refunded = allOrders.filter(o => o.status === "refunded");
-  const revenue = delivered.reduce((s,o) => s + Number(o.price || 0), 0);
-  const avg = delivered.length ? Math.round(revenue / delivered.length) : 0;
-  const rate = allOrders.length ? Math.round(delivered.length / allOrders.length * 100) : 0;
-
-  $("#analyticsStats").innerHTML = `
-    <div class="stat"><div class="k">Total Revenue</div><div class="v">${fmt(revenue)} EGP</div></div>
-    <div class="stat"><div class="k">Avg Order</div><div class="v">${fmt(avg)} EGP</div></div>
-    <div class="stat success"><div class="k">Completion Rate</div><div class="v">${rate}%</div></div>
-    <div class="stat danger"><div class="k">Rejected</div><div class="v">${rejected.length}</div></div>
-    <div class="stat warn"><div class="k">Refunded</div><div class="v">${refunded.length}</div></div>
-  `;
-  const byProduct = {};
-  delivered.forEach(o => {
-    const k = o.product || "Unknown";
-    if (!byProduct[k]) byProduct[k] = { qty: 0, total: 0 };
-    byProduct[k].qty++;
-    byProduct[k].total += Number(o.price || 0);
-  });
-  const sorted = Object.entries(byProduct).sort((a,b) => b[1].total - a[1].total);
-  const w = $("#revenueByProduct");
-  w.innerHTML = sorted.length ? `<div class="tbl-wrap"><table>
-    <thead><tr><th>Product</th><th>Orders</th><th>Revenue</th></tr></thead>
-    <tbody>${sorted.map(([k,v]) => `<tr><td>${esc(k)}</td><td class="mono">${v.qty}</td><td class="mono">${fmt(v.total)} EGP</td></tr>`).join("")}</tbody>
-  </table></div>` : '<div class="dim small mono">No delivered orders yet.</div>';
-}
-
-$("#saveSettings")?.addEventListener("click", async () => {
+$$("[data-clear]").forEach(b => b.addEventListener("click", async () => {
+  const coll = b.dataset.clear;
+  if (!confirm(`Delete EVERY document in "${coll}"? This cannot be undone.`)) return;
+  if (!confirm(`Really sure? Type OK was your last warning.`)) return;
   try {
-    await setDoc(doc(db, "settings", "payment"), {
-      vodafone: $("#setVoda").value, instapay: $("#setInsta").value,
-      telda: $("#setTelda").value, holder: $("#setHolder").value,
-      updatedAt: serverTimestamp()
-    }, { merge: true });
-    await logActivity("settings_save", "payment", "Updated");
-    toast("Saved — live on store");
-  } catch(e){ toast("Error: " + e.message); }
-});
-$("#saveSocial")?.addEventListener("click", async () => {
-  try {
-    await setDoc(doc(db, "settings", "social"), {
-      instagram: $("#setIg").value, discord: $("#setDc").value,
-      updatedAt: serverTimestamp()
-    }, { merge: true });
-    await logActivity("settings_save", "social", "Updated");
-    toast("Saved — live on store");
-  } catch(e){ toast("Error: " + e.message); }
-});
-
-$("#saveBanner")?.addEventListener("click", async () => {
-  try {
-    await setDoc(doc(db, "settings", "banner"), {
-      text: $("#bannerText").value, link: $("#bannerLink").value,
-      on: true, updatedAt: serverTimestamp()
-    });
-    await logActivity("banner_save", "-", "Updated");
-    toast("Banner saved — live on store");
-  } catch(e){ toast("Error: " + e.message); }
-});
-$("#clearBanner")?.addEventListener("click", async () => {
-  try {
-    await setDoc(doc(db, "settings", "banner"), { text: "", link: "", on: false }, { merge: true });
-    toast("Banner disabled");
-  } catch(e){ toast("Error: " + e.message); }
-});
-$("#toggleMaintenance")?.addEventListener("click", async () => {
-  try {
-    const snap = await getDoc(doc(db, "settings", "maintenance"));
-    const on = snap.exists() && snap.data().on === true;
-    await setDoc(doc(db, "settings", "maintenance"), { on: !on }, { merge: true });
-    await logActivity("maintenance", "-", !on ? "ON" : "OFF");
-    toast("Maintenance " + (!on ? "enabled" : "disabled"));
-  } catch(e){ toast("Error: " + e.message); }
-});
-
-$$("[data-danger]").forEach(btn => {
-  btn.addEventListener("click", async () => {
-    if (currentRole !== "owner"){ toast("Owner only"); return; }
-    const type = btn.dataset.danger;
-    if (type === "disable"){
-      if (!await confirmDialog("Disable Store", "Enable maintenance mode for all visitors?")) return;
-      await setDoc(doc(db, "settings", "maintenance"), { on: true }, { merge: true });
-      await logActivity("maintenance", "-", "EMERGENCY DISABLE");
-      toast("Store disabled"); return;
-    }
-    if (!await confirmDialog("Reset " + type, "PERMANENTLY delete ALL " + type + "? This cannot be undone.")) return;
-    if (!await confirmDialog("Are you ABSOLUTELY sure?", "Type was " + type + ". Last chance to cancel.")) return;
-    try {
-      const snap = await getDocs(collection(db, type));
-      await Promise.all(snap.docs.map(d => deleteDoc(d.ref)));
-      await logActivity("danger_reset", type, "Deleted all " + type);
-      toast("Reset complete");
-    } catch(e){ toast("Error: " + e.message); }
-  });
-});
-
-/* ============================================================
-   SEED DEFAULT PRODUCTS
-   ============================================================ */
-const DEFAULT_PRODUCTS = [
-  { id:"vb-800",   kind:"vb",   img:"vbucks.png", product:"800 V-Bucks",               price:199  },
-  { id:"vb-2400",  kind:"vb",   img:"vbucks.png", product:"2400 V-Bucks",              price:479  },
-  { id:"vb-4500",  kind:"vb",   img:"vbucks.png", product:"4500 V-Bucks",              price:759  },
-  { id:"vb-12500", kind:"vb",   img:"vbucks.png", product:"12500 V-Bucks",             price:1749 },
-  { id:"cr-1",     kind:"crew", img:"crew.png",   product:"Fortnite Crew - 1 Month",   price:210  },
-  { id:"cr-2",     kind:"crew", img:"crew.png",   product:"Fortnite Crew - 2 Months",  price:379  },
-  { id:"cr-3",     kind:"crew", img:"crew.png",   product:"Fortnite Crew - 3 Months",  price:559  },
-  { id:"cr-6",     kind:"crew", img:"crew.png",   product:"Fortnite Crew - 6 Months",  price:1049 },
-  { id:"cr-12",    kind:"crew", img:"crew.png",   product:"Fortnite Crew - 12 Months", price:1959 },
-  { id:"gf-500",   kind:"gift", img:"gift.png",   product:"500 V-Bucks Gift",           price:95   },
-  { id:"gf-800",   kind:"gift", img:"gift.png",   product:"800 V-Bucks Gift",           price:150  },
-  { id:"gf-1200",  kind:"gift", img:"gift.png",   product:"1200 V-Bucks Gift",          price:225  },
-  { id:"gf-1500",  kind:"gift", img:"gift.png",   product:"1500 V-Bucks Gift",          price:280  },
-  { id:"gf-1800",  kind:"gift", img:"gift.png",   product:"1800 V-Bucks Gift",          price:330  },
-  { id:"gf-2000",  kind:"gift", img:"gift.png",   product:"2000 V-Bucks Gift",          price:375  }
-];
-
-$("#seedProducts")?.addEventListener("click", async () => {
-  const ok = await confirmDialog(
-    "Load Default Products",
-    "Add all 15 default products to Firestore?\n\nAlready-existing products will be SKIPPED."
-  );
-  if (!ok) return;
-
-  const btn = $("#seedProducts");
-  btn.disabled = true;
-  btn.textContent = "Loading...";
-
-  let added = 0;
-  let skipped = 0;
-
-  try {
-    for (const p of DEFAULT_PRODUCTS) {
-      if (allProducts.find(x => x.id === p.id)) {
-        skipped++;
-        continue;
-      }
-      await setDoc(doc(db, "products", p.id), {
-        product: p.product,
-        price: p.price,
-        kind: p.kind,
-        img: p.img,
-        stock: 999,
-        status: "active",
-        updatedAt: serverTimestamp()
-      });
-      added++;
-    }
-    await logActivity("products_seed", "-", `Added ${added}, skipped ${skipped}`);
-    toast(`✓ Added ${added} · Skipped ${skipped}`);
-  } catch(e){
-    toast("Error: " + e.message);
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "📥 Load Defaults";
-  }
-});
-
-window.addEventListener("beforeunload", () => unsubs.forEach(u => { try { u(); } catch{} }));
+    const snap = await getDocs(collection(db, coll));
+    let n = 0;
+    for (const d of snap.docs){ await deleteDoc(d.ref); n++; }
+    toast(`Cleared ${n} from ${coll}`, "ok");
+    loadAll();
+  } catch(e){ toast("Clear failed", "err"); }
+}));
 </script>
 </body>
 </html>
