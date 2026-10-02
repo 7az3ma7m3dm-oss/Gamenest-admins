@@ -128,15 +128,14 @@ button{cursor:pointer;border:none;background:none;padding:0}
   font-family:var(--mono);font-size:11px;font-weight:700;
   letter-spacing:.16em;text-transform:uppercase;color:var(--err);
 }
-  .side-foot button:hover{background:rgba(255,74,74,.08)}
+.side-foot button:hover{background:rgba(255,74,74,.08)}
 .scrim{
   position:fixed;inset:0;background:rgba(0,0,0,.55);
   backdrop-filter:blur(2px);z-index:150;opacity:0;pointer-events:none;
   transition:opacity .25s;
 }
 .scrim.show{opacity:1;pointer-events:auto}
-
-/* MAIN */
+  /* MAIN */
 main{padding:18px 14px 90px;max-width:1200px;margin:0 auto}
 .page{display:none}
 .page.active{display:block;animation:fi .3s ease}
@@ -539,8 +538,8 @@ const db   = getFirestore(app);
 const $   = (s) => document.querySelector(s);
 const $$  = (s) => document.querySelectorAll(s);
 const fmt = (n) => Number(n || 0).toLocaleString("en-US");
-const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const ts  = (v) => v && v.toDate ? v.toDate().toLocaleString("en-GB",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}) : "—";
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const ts  = (v) => (v && v.toDate) ? v.toDate().toLocaleString("en-GB",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}) : "—";
 
 let toastTimer;
 function toast(msg, kind){
@@ -548,7 +547,7 @@ function toast(msg, kind){
   el.textContent = msg;
   el.className = "toast show " + (kind || "");
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.className = "toast " + (kind || ""), 2400);
+  toastTimer = setTimeout(function(){ el.className = "toast " + (kind || ""); }, 2400);
 }
 
 /* ============ AUTH ============ */
@@ -697,10 +696,24 @@ function renderProducts(){
         <div class="row-price">${fmt(price)} EGP</div>
       </div>
       <div class="row-actions">
+        <button class="btn sm" data-editproduct="${p.id}" data-price="${price}" type="button">EDIT PRICE</button>
         <button class="btn danger sm" data-delproduct="${p.id}" type="button">DELETE</button>
       </div>
     </div>`;
   }).join("");
+
+  el.querySelectorAll("[data-editproduct]").forEach(b => b.addEventListener("click", async () => {
+    const input = prompt("New price (EGP):", b.dataset.price);
+    if (input === null) return;
+    const newPrice = Number(input);
+    if (!newPrice || newPrice <= 0){ toast("Invalid price", "err"); return; }
+    try {
+      await updateDoc(doc(db, "products", b.dataset.editproduct), { price: newPrice });
+      toast("Price → " + newPrice + " EGP", "ok");
+      loadProducts();
+    } catch(e){ toast("Update failed", "err"); }
+  }));
+
   el.querySelectorAll("[data-delproduct]").forEach(b => b.addEventListener("click", async () => {
     if (!confirm("Delete this product?")) return;
     try { await deleteDoc(doc(db, "products", b.dataset.delproduct)); toast("Deleted", "ok"); loadProducts(); }
@@ -873,141 +886,6 @@ $$("[data-clear]").forEach(b => b.addEventListener("click", async () => {
     loadAll();
   } catch(e){ toast("Clear failed", "err"); }
 }));
-  /* ============ PATCH: stable order + edit price + load default ============ */
-
-const DEFAULT_PRODUCTS = [
-  { name: "800 V-Bucks",    price: 199,  category: "vbucks", image: "vbucks.png" },
-  { name: "2400 V-Bucks",   price: 479,  category: "vbucks", image: "vbucks.png" },
-  { name: "4500 V-Bucks",   price: 759,  category: "vbucks", image: "vbucks.png" },
-  { name: "12500 V-Bucks",  price: 1749, category: "vbucks", image: "vbucks.png" },
-  { name: "Crew 1 Month",   price: 210,  category: "crew",   image: "crew.png" },
-  { name: "Crew 3 Months",  price: 559,  category: "crew",   image: "crew.png" },
-  { name: "Crew 6 Months",  price: 1049, category: "crew",   image: "crew.png" },
-  { name: "Crew 12 Months", price: 1959, category: "crew",   image: "crew.png" },
-  { name: "Gift 500",       price: 95,   category: "gift",   image: "gift.png" },
-  { name: "Gift 1200",      price: 225,  category: "gift",   image: "gift.png" },
-  { name: "Gift 2000",      price: 375,  category: "gift",   image: "gift.png" },
-  { name: "Gift 5000",      price: 849,  category: "gift",   image: "gift.png" }
-];
-
-async function loadProducts(){
-  $("#productsList").innerHTML = '<div class="loading">Loading…</div>';
-  try {
-    const snap = await getDocs(collection(db, "products"));
-    PRODUCTS = snap.docs.map(d => Object.assign({ id: d.id }, d.data()));
-    // Auto-assign order to any product missing it (first load only)
-    let needs = false;
-    PRODUCTS.forEach((p, i) => {
-      if (p.order === undefined || p.order === null) { p.order = i; needs = true; }
-    });
-    if (needs) {
-      await Promise.all(PRODUCTS.map(p =>
-        updateDoc(doc(db, "products", p.id), { order: p.order }).catch(() => {})
-      ));
-    }
-    PRODUCTS.sort((a,b) => (a.order == null ? 0 : a.order) - (b.order == null ? 0 : b.order));
-    renderProducts();
-  } catch(e){
-    $("#productsList").innerHTML = '<div class="empty">Could not load products</div>';
-  }
-}
-
-function renderProducts(){
-  const el = $("#productsList");
-  if (!PRODUCTS.length){ el.innerHTML = '<div class="empty">No products yet — add one above</div>'; return; }
-  el.innerHTML = PRODUCTS.map(p => {
-    const name  = p.name || p.title || p.productName || p.product_name || p.label || p.id;
-    const cat   = p.category || p.cat || p.type || p.kind || "—";
-    const price = (p.price != null) ? p.price : ((p.amount != null) ? p.amount : ((p.cost != null) ? p.cost : 0));
-    return `
-    <div class="row">
-      <div class="row-top">
-        <div>
-          <div class="row-id">${esc(name)}</div>
-          <div class="row-meta">${esc(cat)}</div>
-        </div>
-        <div class="row-price">${fmt(price)} EGP</div>
-      </div>
-      <div class="row-actions">
-        <button class="btn sm" data-editproduct="${p.id}" data-price="${price}" type="button">EDIT PRICE</button>
-        <button class="btn danger sm" data-delproduct="${p.id}" type="button">DELETE</button>
-      </div>
-    </div>`;
-  }).join("");
-
-  el.querySelectorAll("[data-editproduct]").forEach(b => b.addEventListener("click", async () => {
-    const input = prompt("New price (EGP):", b.dataset.price);
-    if (input === null) return;
-    const newPrice = Number(input);
-    if (!newPrice || newPrice <= 0){ toast("Invalid price", "err"); return; }
-    try {
-      await updateDoc(doc(db, "products", b.dataset.editproduct), { price: newPrice });
-      toast("Price → " + newPrice + " EGP", "ok");
-      loadProducts();
-    } catch(e){ toast("Update failed", "err"); }
-  }));
-
-  el.querySelectorAll("[data-delproduct]").forEach(b => b.addEventListener("click", async () => {
-    if (!confirm("Delete this product?")) return;
-    try { await deleteDoc(doc(db, "products", b.dataset.delproduct)); toast("Deleted", "ok"); loadProducts(); }
-    catch(e){ toast("Delete failed", "err"); }
-  }));
-}
-
-// Patch ADD button so new products get max order + 1 (always at bottom)
-(function(){
-  const old = $("#addProductBtn");
-  if (!old) return;
-  const clone = old.cloneNode(true);
-  old.parentNode.replaceChild(clone, old);
-  clone.addEventListener("click", async () => {
-    const name = $("#pName").value.trim();
-    const price = Number($("#pPrice").value);
-    const category = $("#pCategory").value;
-    const image = $("#pImage").value.trim();
-    if (!name || !price){ toast("Name and price required", "err"); return; }
-    try {
-      const maxOrder = PRODUCTS.reduce((m, p) => Math.max(m, p.order == null ? 0 : p.order), -1);
-      await addDoc(collection(db, "products"), {
-        name, price, category, image,
-        order: maxOrder + 1,
-        createdAt: serverTimestamp()
-      });
-      $("#pName").value = ""; $("#pPrice").value = ""; $("#pImage").value = "";
-      toast("Product added", "ok");
-      loadProducts();
-    } catch(e){ toast("Add failed", "err"); }
-  });
-})();
-
-// Add "Load Default" button next to ADD_PRODUCT
-(function(){
-  const btn = $("#addProductBtn");
-  if (!btn || $("#loadDefaultBtn")) return;
-  const lb = document.createElement("button");
-  lb.id = "loadDefaultBtn";
-  lb.type = "button";
-  lb.className = "btn ghost";
-  lb.style.marginLeft = "8px";
-  lb.textContent = "LOAD_DEFAULT";
-  btn.parentNode.insertBefore(lb, btn.nextSibling);
-  lb.addEventListener("click", async () => {
-    if (!confirm("Reset products to defaults? This DELETES all current products and re-adds the default list.")) return;
-    if (!confirm("Really sure? Cannot be undone.")) return;
-    try {
-      const snap = await getDocs(collection(db, "products"));
-      for (const d of snap.docs){ await deleteDoc(d.ref); }
-      for (let i = 0; i < DEFAULT_PRODUCTS.length; i++){
-        await addDoc(collection(db, "products"), Object.assign({}, DEFAULT_PRODUCTS[i], {
-          order: i,
-          createdAt: serverTimestamp()
-        }));
-      }
-      toast("Defaults loaded", "ok");
-      loadProducts();
-    } catch(e){ toast("Failed: " + e.message, "err"); }
-  });
-})();
 </script>
 </body>
 </html>
